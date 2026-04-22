@@ -61,12 +61,12 @@ Route::middleware([
     })->name('dashboard');
 
     // Facilities
-    Route::get('/facilities', \App\Livewire\Facilities\Index::class)->name('facilities.index');
+    Route::get('/facilities', fn () => view('facilities'))->name('facilities.index');
     Route::get('/facilities/create', \App\Livewire\Facilities\CreateEdit::class)->name('facilities.create');
     Route::get('/facilities/{facility}/edit', \App\Livewire\Facilities\CreateEdit::class)->name('facilities.edit');
 
     // Stations
-    Route::get('/stations', \App\Livewire\Stations\Index::class)->name('stations.index');
+    Route::get('/stations', fn () => view('stations'))->name('stations.index');
     Route::get('/stations/create', \App\Livewire\Stations\CreateEdit::class)->name('stations.create');
     Route::get('/stations/{station}/edit', \App\Livewire\Stations\CreateEdit::class)->name('stations.edit');
     Route::get('/stations/{station}/qr', \App\Livewire\Stations\QrCode::class)->name('stations.qr');

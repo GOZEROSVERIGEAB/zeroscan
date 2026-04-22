@@ -1,21 +1,15 @@
-<div class="py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="space-y-6">
+    {{-- Action Bar --}}
+    <div class="flex justify-end">
+        <a href="{{ route('facilities.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#97d700] text-[#005151] font-semibold rounded-lg hover:bg-[#85c100] transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            {{ __('scanit.facilities.create') }}
+        </a>
+    </div>
 
-        {{-- Header --}}
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">{{ __('scanit.facilities.title') }}</h1>
-                <p class="text-gray-500 mt-1">{{ __('scanit.facilities.subtitle') }}</p>
-            </div>
-            <a href="{{ route('facilities.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#97d700] text-[#005151] font-semibold rounded-lg hover:bg-[#85c100] transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                {{ __('scanit.facilities.create') }}
-            </a>
-        </div>
-
-        {{-- Flash Message --}}
+    {{-- Flash Message --}}
         @if(session('message'))
             <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center gap-3">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +144,6 @@
                 </div>
             @endif
         @endif
-    </div>
 
     {{-- Delete Modal --}}
     @if($showDeleteModal)
