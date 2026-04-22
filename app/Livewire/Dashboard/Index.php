@@ -198,7 +198,7 @@ class Index extends Component
         return Station::whereIn('id', $stationIds)
             ->withCount(['inventories' => function ($query) use ($periodStart) {
                 $query->where('status', Inventory::STATUS_COMPLETED)
-                    ->where('created_at', '>=', $periodStart);
+                    ->where('inventories.created_at', '>=', $periodStart);
             }])
             ->orderByDesc('inventories_count')
             ->limit(5)
@@ -234,7 +234,7 @@ class Index extends Component
         return $query
             ->withCount(['inventories' => function ($q) use ($periodStart) {
                 $q->where('status', Inventory::STATUS_COMPLETED)
-                    ->where('created_at', '>=', $periodStart);
+                    ->where('inventories.created_at', '>=', $periodStart);
             }])
             ->orderByDesc('inventories_count')
             ->limit(5)
