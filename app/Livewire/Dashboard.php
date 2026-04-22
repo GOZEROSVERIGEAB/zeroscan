@@ -23,6 +23,7 @@ class Dashboard extends Component
     public function setPeriod(string $period): void
     {
         $this->period = $period;
+        $this->dispatch('chartDataUpdated', $this->chartData);
     }
 
     protected function getTeamStationIds(): array

@@ -128,7 +128,7 @@
                     <button class="px-3 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-600">D</button>
                 </div>
             </div>
-            <div class="h-48" x-data="chartComponent()" x-init="initChart()">
+            <div class="h-48" wire:ignore x-data="chartComponent(@js($this->chartData))" x-init="initChart()">
                 <canvas x-ref="chart"></canvas>
             </div>
         </div>
@@ -256,18 +256,18 @@
 
 @script
 <script>
-    Alpine.data('chartComponent', () => ({
+    Alpine.data('chartComponent', (initialData) => ({
         chart: null,
+        chartData: initialData,
         initChart() {
             const ctx = this.$refs.chart.getContext('2d');
-            const chartData = @json($this->chartData);
 
             this.chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: chartData.labels,
+                    labels: this.chartData.labels,
                     datasets: [{
-                        data: chartData.data,
+                        data: this.chartData.data,
                         backgroundColor: '#97d700',
                         borderRadius: 6,
                         barThickness: 20,
@@ -291,6 +291,12 @@
                         }
                     }
                 }
+            });
+
+            Livewire.on('chartDataUpdated', (data) => {
+                this.chart.data.labels = data[0].labels;
+                this.chart.data.datasets[0].data = data[0].data;
+                this.chart.update();
             });
         }
     }));
