@@ -270,6 +270,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.index');
+        return view('livewire.dashboard.index')
+            ->layout('layouts.app');
     }
 }
