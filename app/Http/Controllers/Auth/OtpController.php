@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use App\Models\User;
 use App\Notifications\OtpLoginNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
@@ -36,15 +38,54 @@ class OtpController extends Controller
             ]);
         }
 
-        $request->validate([
-            'email' => ['required', 'email', 'exists:users,email'],
-        ], [
-            'email.exists' => __('scanit.auth.email_not_found'),
-        ]);
+        // In local environment, allow registration with just email
+        // In production, require existing user
+        if (app()->environment('local')) {
+            $request->validate([
+                'email' => ['required', 'email'],
+            ]);
+        } else {
+            $request->validate([
+                'email' => ['required', 'email', 'exists:users,email'],
+            ], [
+                'email.exists' => __('scanit.auth.email_not_found'),
+            ]);
+        }
 
         RateLimiter::hit($throttleKey, self::DECAY_MINUTES * 60);
 
+        // Find or create user (create only in local environment)
         $user = User::where('email', $request->email)->first();
+
+        if (! $user && app()->environment('local')) {
+            $user = DB::transaction(function () use ($request) {
+                $name = explode('@', $request->email)[0];
+
+                $user = User::create([
+                    'name' => $name,
+                    'email' => $request->email,
+                    'password' => bcrypt(str()->random(32)),
+                ]);
+
+                // Create personal team for the user
+                $team = Team::create([
+                    'user_id' => $user->id,
+                    'name' => $name . "'s Team",
+                    'personal_team' => true,
+                ]);
+
+                $user->current_team_id = $team->id;
+                $user->save();
+
+                return $user;
+            });
+        }
+
+        if (! $user) {
+            return back()->withErrors([
+                'email' => __('scanit.auth.email_not_found'),
+            ]);
+        }
         $otp = random_int(100000, 999999);
 
         Cache::put("otp:{$user->id}", $otp, now()->addMinutes(10));

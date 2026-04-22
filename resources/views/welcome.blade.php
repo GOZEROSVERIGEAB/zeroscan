@@ -866,7 +866,7 @@
                     </a>
                 </div>
                 <p class="text-gray-500 text-sm">
-                    &copy; {{ date('Y') }} PreZero Sverige. Alla rättigheter förbehållna.
+                    &copy; {{ date('Y') }} GoZero Sverige AB. Alla rättigheter förbehållna.
                 </p>
             </div>
         </div>

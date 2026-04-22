@@ -24,13 +24,30 @@ class Customer extends Model
         'postal_code',
         'country',
         'logo_path',
+        'service_name',
         'settings',
         'is_active',
+        'is_enterprise',
     ];
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        if ($this->logo_path) {
+            return asset('storage/' . $this->logo_path);
+        }
+
+        return null;
+    }
+
+    public function hasCustomBranding(): bool
+    {
+        return $this->logo_path || $this->service_name;
+    }
 
     protected $casts = [
         'settings' => 'array',
         'is_active' => 'boolean',
+        'is_enterprise' => 'boolean',
     ];
 
     protected static function booted(): void

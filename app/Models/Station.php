@@ -29,6 +29,9 @@ class Station extends Model
         'require_email',
         'max_images',
         'primary_color',
+        'branding_logo_path',
+        'branding_service_name',
+        'use_custom_branding',
         'total_scans',
         'total_items',
         'total_co2_savings',
@@ -37,11 +40,41 @@ class Station extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'require_email' => 'boolean',
+        'use_custom_branding' => 'boolean',
         'max_images' => 'integer',
         'total_scans' => 'integer',
         'total_items' => 'integer',
         'total_co2_savings' => 'decimal:2',
     ];
+
+    public function getEffectiveBranding(): array
+    {
+        // If station has custom branding enabled, use it
+        if ($this->use_custom_branding && ($this->branding_logo_path || $this->branding_service_name)) {
+            return [
+                'logo_url' => $this->branding_logo_path ? asset('storage/' . $this->branding_logo_path) : null,
+                'service_name' => $this->branding_service_name,
+                'has_custom' => true,
+            ];
+        }
+
+        // Fall back to facility branding
+        $facility = $this->facility;
+        if ($facility && $facility->hasCustomBranding()) {
+            return [
+                'logo_url' => $facility->branding_logo_url,
+                'service_name' => $facility->branding_service_name,
+                'has_custom' => true,
+            ];
+        }
+
+        // Default branding
+        return [
+            'logo_url' => null,
+            'service_name' => null,
+            'has_custom' => false,
+        ];
+    }
 
     protected static function booted(): void
     {

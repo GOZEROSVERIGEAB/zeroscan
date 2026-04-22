@@ -12,7 +12,8 @@ class PublicScanningController extends Controller
 {
     public function show(string $uuid)
     {
-        $station = Station::where('public_uuid', $uuid)
+        $station = Station::with('facility')
+            ->where('public_uuid', $uuid)
             ->where('is_active', true)
             ->firstOrFail();
 

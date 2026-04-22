@@ -3,12 +3,10 @@
         <div class="w-full max-w-md">
             {{-- Logo --}}
             <div class="flex justify-center mb-8">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-10 h-10 text-lime-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('scanit.app_name') }}</span>
-                </div>
+                <a href="/" class="flex items-center gap-3">
+                    <img src="/images/prezero-logo.svg" alt="PreZero" class="h-12">
+                    <span class="text-2xl font-semibold text-[#005151]">Scan<span class="font-normal text-lg">it</span></span>
+                </a>
             </div>
 
             {{-- Verify Card --}}
@@ -86,7 +84,7 @@
 
             {{-- Footer --}}
             <p class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                &copy; {{ date('Y') }} {{ __('scanit.app_name') }}. All rights reserved.
+                &copy; {{ date('Y') }} GoZero Sverige AB. Alla rättigheter förbehållna.
             </p>
         </div>
     </div>

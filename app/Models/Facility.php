@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -28,6 +29,8 @@ class Facility extends Model
         'contact_email',
         'contact_phone',
         'is_active',
+        'branding_logo_path',
+        'branding_service_name',
     ];
 
     protected $casts = [
@@ -35,6 +38,20 @@ class Facility extends Model
         'longitude' => 'decimal:8',
         'is_active' => 'boolean',
     ];
+
+    public function getBrandingLogoUrlAttribute(): ?string
+    {
+        if ($this->branding_logo_path) {
+            return asset('storage/' . $this->branding_logo_path);
+        }
+
+        return null;
+    }
+
+    public function hasCustomBranding(): bool
+    {
+        return $this->branding_logo_path || $this->branding_service_name;
+    }
 
     protected static function booted(): void
     {
@@ -53,6 +70,11 @@ class Facility extends Model
     public function stations(): HasMany
     {
         return $this->hasMany(Station::class);
+    }
+
+    public function inventories(): HasManyThrough
+    {
+        return $this->hasManyThrough(Inventory::class, Station::class);
     }
 
     public function getRouteKeyName(): string

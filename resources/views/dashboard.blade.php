@@ -5,11 +5,13 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
-            </div>
+            <livewire:dashboard />
         </div>
     </div>
+
+    @assets
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @endassets
 </x-app-layout>

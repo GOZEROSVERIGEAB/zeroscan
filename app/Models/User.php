@@ -87,4 +87,14 @@ class User extends Authenticatable
     {
         return $this->otp_enabled && ! $this->hasOtpVerified();
     }
+
+    public function isEnterprise(): bool
+    {
+        return $this->customer?->is_enterprise ?? false;
+    }
+
+    public function canCreateTeams(): bool
+    {
+        return $this->isEnterprise();
+    }
 }

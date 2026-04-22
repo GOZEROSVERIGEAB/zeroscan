@@ -13,7 +13,13 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('scanit.nav.dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('facilities.index') }}" :active="request()->routeIs('facilities.*')">
+                        {{ __('scanit.nav.facilities') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('stations.index') }}" :active="request()->routeIs('stations.*')">
+                        {{ __('scanit.nav.stations') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -47,11 +53,13 @@
                                         {{ __('Team Settings') }}
                                     </x-dropdown-link>
 
-                                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                        <x-dropdown-link href="{{ route('teams.create') }}">
-                                            {{ __('Create New Team') }}
-                                        </x-dropdown-link>
-                                    @endcan
+                                    @if(Auth::user()->canCreateTeams())
+                                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                            <x-dropdown-link href="{{ route('teams.create') }}">
+                                                {{ __('Create New Team') }}
+                                            </x-dropdown-link>
+                                        @endcan
+                                    @endif
 
                                     <!-- Team Switcher -->
                                     @if (Auth::user()->allTeams()->count() > 1)
@@ -140,7 +148,13 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('scanit.nav.dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('facilities.index') }}" :active="request()->routeIs('facilities.*')">
+                {{ __('scanit.nav.facilities') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('stations.index') }}" :active="request()->routeIs('stations.*')">
+                {{ __('scanit.nav.stations') }}
             </x-responsive-nav-link>
         </div>
 
@@ -194,11 +208,13 @@
                         {{ __('Team Settings') }}
                     </x-responsive-nav-link>
 
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-responsive-nav-link>
-                    @endcan
+                    @if(Auth::user()->canCreateTeams())
+                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                            <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
+                                {{ __('Create New Team') }}
+                            </x-responsive-nav-link>
+                        @endcan
+                    @endif
 
                     <!-- Team Switcher -->
                     @if (Auth::user()->allTeams()->count() > 1)

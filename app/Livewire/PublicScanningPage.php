@@ -2,154 +2,151 @@
 
 namespace App\Livewire;
 
-use App\Jobs\ProcessScannedInventory;
+use App\Jobs\ProcessScanningSession;
 use App\Models\Inventory;
 use App\Models\ScanningSession;
 use App\Models\Station;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-#[Layout('components.layouts.public')]
 class PublicScanningPage extends Component
 {
     use WithFileUploads;
 
     public Station $station;
-    public string $currentStep = 'info';
-    public array $images = [];
-    public array $tempImages = [];
-    public ?string $email = null;
-    public bool $gdprAccepted = false;
+    public array $branding;
+
+    public int $step = 1;
+    public int $maxImages;
+
+    public array $photos = [];
+    public array $uploadedPhotos = [];
+
+    public ?string $visitorName = null;
+    public ?string $visitorEmail = null;
+    public bool $wantsReport = false;
+    public bool $gdprConsent = false;
+
     public ?ScanningSession $session = null;
 
-    protected $listeners = ['imageUploaded' => 'handleImageUpload'];
+    protected $listeners = ['photoUploaded'];
 
     public function mount(Station $station): void
     {
-        $this->station = $station;
+        $this->station = $station->load('facility');
+        $this->branding = $station->getEffectiveBranding();
+        $this->maxImages = $station->max_images ?? 5;
     }
 
-    public function startCapture(): void
+    public function rules(): array
     {
-        $this->currentStep = 'capture';
+        return [
+            'photos.*' => ['image', 'max:10240'],
+            'visitorName' => ['nullable', 'string', 'max:255'],
+            'visitorEmail' => ['nullable', 'email', 'max:255'],
+        ];
     }
 
-    public function handleImageUpload(int $slot, string $imageData): void
+    public function startScanning(): void
     {
-        $this->tempImages[$slot] = $imageData;
+        $this->step = 2;
     }
 
-    public function storeImage(int $slot): void
+    public function updatedPhotos(): void
     {
-        if (!isset($this->tempImages[$slot])) {
+        $this->validateOnly('photos.*');
+
+        foreach ($this->photos as $photo) {
+            if (count($this->uploadedPhotos) >= $this->maxImages) {
+                break;
+            }
+
+            $path = $photo->store('scanned-items', 'public');
+
+            $this->uploadedPhotos[] = [
+                'path' => $path,
+                'url' => Storage::disk('public')->url($path),
+                'name' => $photo->getClientOriginalName(),
+            ];
+        }
+
+        $this->photos = [];
+    }
+
+    public function removePhoto(int $index): void
+    {
+        if (isset($this->uploadedPhotos[$index])) {
+            Storage::disk('public')->delete($this->uploadedPhotos[$index]['path']);
+            unset($this->uploadedPhotos[$index]);
+            $this->uploadedPhotos = array_values($this->uploadedPhotos);
+        }
+    }
+
+    public function goToContactStep(): void
+    {
+        if (count($this->uploadedPhotos) === 0) {
+            $this->addError('photos', 'Du måste ladda upp minst en bild');
             return;
         }
 
-        $imageData = $this->tempImages[$slot];
-
-        if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $matches)) {
-            $extension = $matches[1];
-            $imageData = substr($imageData, strpos($imageData, ',') + 1);
-            $imageData = base64_decode($imageData);
-
-            $filename = Str::uuid() . '.' . $extension;
-            $path = "scans/{$this->station->id}/{$filename}";
-
-            Storage::disk('public')->put($path, $imageData);
-            $this->images[$slot] = $path;
-            unset($this->tempImages[$slot]);
-        }
+        $this->step = 3;
     }
 
-    public function removeImage(int $slot): void
+    public function toggleWantsReport(): void
     {
-        if (isset($this->images[$slot])) {
-            Storage::disk('public')->delete($this->images[$slot]);
-            unset($this->images[$slot]);
-        }
-
-        if (isset($this->tempImages[$slot])) {
-            unset($this->tempImages[$slot]);
-        }
+        $this->wantsReport = !$this->wantsReport;
     }
 
-    public function proceedToEmail(): void
+    public function submitScan(): void
     {
-        if (count($this->images) === 0 && count($this->tempImages) === 0) {
-            $this->addError('images', __('scanit.public.error_no_images'));
-
-            return;
-        }
-
-        foreach ($this->tempImages as $slot => $imageData) {
-            $this->storeImage($slot);
-        }
-
-        $this->currentStep = 'email';
-    }
-
-    public function skipEmail(): void
-    {
-        $this->email = null;
-        $this->completeScan();
-    }
-
-    public function completeScan(): void
-    {
-        if ($this->email && !$this->gdprAccepted) {
-            $this->addError('gdpr', __('scanit.validation.gdpr_required'));
-
-            return;
-        }
-
-        if ($this->email) {
+        if ($this->wantsReport) {
             $this->validate([
-                'email' => 'email',
+                'visitorEmail' => ['required', 'email', 'max:255'],
+                'gdprConsent' => ['accepted'],
             ], [
-                'email.email' => __('scanit.validation.email_invalid'),
+                'gdprConsent.accepted' => 'Du måste godkänna hanteringen av dina personuppgifter.',
             ]);
         }
 
         $this->session = ScanningSession::create([
             'station_id' => $this->station->id,
-            'email' => $this->email,
+            'visitor_name' => $this->visitorName,
+            'email' => $this->wantsReport ? $this->visitorEmail : null,
+            'gdpr_consent' => $this->wantsReport ? $this->gdprConsent : false,
+            'gdpr_consent_at' => $this->wantsReport && $this->gdprConsent ? now() : null,
+            'status' => ScanningSession::STATUS_PENDING,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);
 
-        foreach ($this->images as $slot => $imagePath) {
-            $inventory = Inventory::create([
+        foreach ($this->uploadedPhotos as $photo) {
+            Inventory::create([
                 'station_id' => $this->station->id,
                 'scanning_session_id' => $this->session->id,
-                'image_path' => $imagePath,
+                'image_path' => $photo['path'],
                 'status' => Inventory::STATUS_QUEUED,
             ]);
-
-            ProcessScannedInventory::dispatch($inventory);
         }
 
-        $this->station->incrementStats(count($this->images));
+        ProcessScanningSession::dispatch($this->session);
 
-        $this->currentStep = 'thankyou';
+        $this->step = 4;
     }
 
-    public function scanMore(): void
+    public function getProgressProperty(): int
     {
-        $this->reset(['images', 'tempImages', 'email', 'gdprAccepted', 'session']);
-        $this->currentStep = 'info';
-    }
-
-    public function getMaxImagesProperty(): int
-    {
-        return $this->station->max_images ?? 5;
+        return match ($this->step) {
+            1 => 0,
+            2 => 33,
+            3 => 66,
+            4 => 100,
+            default => 0,
+        };
     }
 
     public function render()
     {
-        return view('livewire.public-scanning-page')
-            ->layoutData(['station' => $this->station]);
+        return view('livewire.public-scanning-page');
     }
 }
