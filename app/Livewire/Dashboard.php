@@ -27,14 +27,16 @@ class Dashboard extends Component
 
     protected function getTeamStationIds(): array
     {
-        $team = Auth::user()->currentTeam;
-        if (!$team) {
-            return [];
+        $user = Auth::user();
+
+        // Use user's customer_id to find stations
+        if ($user->customer_id) {
+            return Station::whereHas('facility', function ($query) use ($user) {
+                $query->where('customer_id', $user->customer_id);
+            })->pluck('id')->toArray();
         }
 
-        return Station::whereHas('facility.customer', function ($query) use ($team) {
-            $query->where('team_id', $team->id);
-        })->pluck('id')->toArray();
+        return [];
     }
 
     protected function getPeriodStart(): Carbon
@@ -189,7 +191,7 @@ class Dashboard extends Component
         return Station::whereIn('id', $stationIds)
             ->withCount(['inventories' => function ($query) use ($periodStart) {
                 $query->where('status', Inventory::STATUS_COMPLETED)
-                    ->where('created_at', '>=', $periodStart);
+                    ->where('inventories.created_at', '>=', $periodStart);
             }])
             ->orderByDesc('inventories_count')
             ->limit(5)
@@ -207,19 +209,17 @@ class Dashboard extends Component
 
     public function getFacilitiesProperty(): array
     {
-        $team = Auth::user()->currentTeam;
-        if (!$team) {
+        $user = Auth::user();
+        $periodStart = $this->getPeriodStart();
+
+        if (!$user->customer_id) {
             return [];
         }
 
-        $periodStart = $this->getPeriodStart();
-
-        return Facility::whereHas('customer', function ($query) use ($team) {
-            $query->where('team_id', $team->id);
-        })
-            ->withCount(['inventories' => function ($query) use ($periodStart) {
-                $query->where('status', Inventory::STATUS_COMPLETED)
-                    ->where('created_at', '>=', $periodStart);
+        return Facility::where('customer_id', $user->customer_id)
+            ->withCount(['inventories' => function ($q) use ($periodStart) {
+                $q->where('status', Inventory::STATUS_COMPLETED)
+                    ->where('inventories.created_at', '>=', $periodStart);
             }])
             ->orderByDesc('inventories_count')
             ->limit(5)
