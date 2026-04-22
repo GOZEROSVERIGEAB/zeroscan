@@ -187,11 +187,10 @@
                     <img
                         src="{{ $branding['logo_url'] }}"
                         alt="{{ $branding['service_name'] ?? 'Logo' }}"
-                        class="h-8 sm:h-10 max-w-[140px] sm:max-w-[180px] object-contain"
+                        class="h-10 sm:h-12 max-w-[200px] sm:max-w-[240px] object-contain"
                     >
-                    @if($branding['service_name'])
-                        <span class="text-xl sm:text-2xl font-semibold text-pz-teal">{{ $branding['service_name'] }}</span>
-                    @endif
+                @elseif($branding['has_custom'] && $branding['service_name'])
+                    <span class="text-xl sm:text-2xl font-semibold text-pz-teal">{{ $branding['service_name'] }}</span>
                 @else
                     <img src="/images/prezero-logo.svg" alt="PreZero" class="h-8 sm:h-10">
                     <span class="text-xl sm:text-2xl font-semibold text-pz-teal">
