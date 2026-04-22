@@ -56,7 +56,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
     // Dashboard
-    Route::get('/dashboard', \App\Livewire\Dashboard\Index::class)->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
     // Facilities
     Route::get('/facilities', \App\Livewire\Facilities\Index::class)->name('facilities.index');
