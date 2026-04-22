@@ -1,269 +1,306 @@
 <div class="py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-        {{-- Welcome Header --}}
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-900">
-                {{ __('scanit.dashboard.welcome_back', ['name' => auth()->user()->name]) }}
-            </h1>
-            <p class="text-gray-500 mt-1">{{ __('scanit.dashboard.title') }} - Scanit</p>
-        </div>
-
-        {{-- Onboarding --}}
-        @if($showOnboarding)
-            <div class="bg-gradient-to-br from-[#005151] to-[#006666] rounded-2xl p-8 mb-8 text-white">
-                <div class="max-w-2xl">
-                    <h2 class="text-2xl font-bold mb-2">{{ __('scanit.onboarding.title') }}</h2>
-                    <p class="text-white/80 mb-8">{{ __('scanit.onboarding.subtitle') }}</p>
-
-                    {{-- Progress --}}
-                    <div class="flex items-center gap-2 mb-8">
-                        @for($i = 1; $i <= $totalSteps; $i++)
-                            <div class="flex-1 h-2 rounded-full {{ $i <= $onboardingStep ? 'bg-[#97d700]' : 'bg-white/20' }}"></div>
-                        @endfor
-                    </div>
-
-                    {{-- Steps --}}
-                    <div class="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
-                        @if($onboardingStep === 1)
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-[#97d700] flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-[#005151]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-semibold mb-2">{{ __('scanit.onboarding.step_1_title') }}</h3>
-                                    <p class="text-white/70">{{ __('scanit.onboarding.step_1_desc') }}</p>
-                                </div>
-                            </div>
-                        @elseif($onboardingStep === 2)
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-[#97d700] flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-[#005151]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-semibold mb-2">{{ __('scanit.onboarding.step_2_title') }}</h3>
-                                    <p class="text-white/70">{{ __('scanit.onboarding.step_2_desc') }}</p>
-                                </div>
-                            </div>
-                        @elseif($onboardingStep === 3)
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-[#97d700] flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-[#005151]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-semibold mb-2">{{ __('scanit.onboarding.step_3_title') }}</h3>
-                                    <p class="text-white/70">{{ __('scanit.onboarding.step_3_desc') }}</p>
-                                </div>
-                            </div>
-                        @else
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-[#97d700] flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-[#005151]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-semibold mb-2">{{ __('scanit.onboarding.step_4_title') }}</h3>
-                                    <p class="text-white/70">{{ __('scanit.onboarding.step_4_desc') }}</p>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Navigation --}}
-                    <div class="flex items-center justify-between mt-6">
-                        <div class="text-sm text-white/60">
-                            {{ __('scanit.onboarding.step', ['current' => $onboardingStep, 'total' => $totalSteps]) }}
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <button wire:click="skipOnboarding" class="px-4 py-2 text-white/70 hover:text-white transition-colors">
-                                {{ __('scanit.onboarding.skip') }}
-                            </button>
-
-                            @if($onboardingStep > 1)
-                                <button wire:click="previousStep" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                                    {{ __('scanit.onboarding.previous') }}
-                                </button>
-                            @endif
-
-                            @if($onboardingStep < $totalSteps)
-                                <button wire:click="nextStep" class="px-6 py-2 bg-[#97d700] text-[#005151] font-semibold rounded-lg hover:bg-[#85c100] transition-colors">
-                                    {{ __('scanit.onboarding.next') }}
-                                </button>
-                            @else
-                                <button wire:click="goToFacilities" class="px-6 py-2 bg-[#97d700] text-[#005151] font-semibold rounded-lg hover:bg-[#85c100] transition-colors">
-                                    {{ __('scanit.onboarding.complete') }}
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        {{-- Quick Stats --}}
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['today_scans'] }}</p>
-                        <p class="text-sm text-gray-500">{{ __('scanit.stats.today') }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['total_scans']) }}</p>
-                        <p class="text-sm text-gray-500">{{ __('scanit.stats.total_scans') }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-gray-900">{{ number_format($stats['total_items']) }}</p>
-                        <p class="text-sm text-gray-500">{{ __('scanit.stats.total_items') }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total_co2'] }} <span class="text-sm font-normal text-gray-500">kg</span></p>
-                        <p class="text-sm text-gray-500">{{ __('scanit.stats.total_co2') }}</p>
-                    </div>
-                </div>
+        {{-- Period Selector --}}
+        <div class="flex justify-end">
+            <div class="inline-flex rounded-lg bg-gray-100 p-1">
+                <button
+                    wire:click="setPeriod('7')"
+                    class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $period === '7' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900' }}"
+                >
+                    7 dagar
+                </button>
+                <button
+                    wire:click="setPeriod('30')"
+                    class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $period === '30' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900' }}"
+                >
+                    30 dagar
+                </button>
+                <button
+                    wire:click="setPeriod('90')"
+                    class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $period === '90' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900' }}"
+                >
+                    90 dagar
+                </button>
+                <button
+                    wire:click="setPeriod('365')"
+                    class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $period === '365' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900' }}"
+                >
+                    1 år
+                </button>
             </div>
         </div>
 
-        <div class="grid lg:grid-cols-3 gap-8">
-            {{-- Facilities --}}
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="flex items-center justify-between p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-semibold text-gray-900">{{ __('scanit.facilities.title') }}</h2>
-                        <a href="{{ route('facilities.index') }}" class="text-sm text-[#005151] hover:underline font-medium">
-                            {{ __('scanit.actions.view') }} →
-                        </a>
+        {{-- Stats Cards --}}
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {{-- Items --}}
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Hämtade</span>
+                    <div class="text-[#97d700]">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                        </svg>
                     </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">{{ number_format($this->stats['items']['value'], 0, ',', ' ') }}</div>
+                @if($this->stats['items']['change'] != 0)
+                <div class="flex items-center text-sm {{ $this->stats['items']['change'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    <svg class="w-4 h-4 mr-1 {{ $this->stats['items']['change'] >= 0 ? '' : 'rotate-180' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ abs($this->stats['items']['change']) }}%
+                </div>
+                @endif
+            </div>
 
-                    @if($facilities->isEmpty())
-                        {{-- Empty State --}}
-                        <div class="p-12 text-center">
-                            <div class="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('scanit.facilities.empty_title') }}</h3>
-                            <p class="text-gray-500 mb-6 max-w-sm mx-auto">{{ __('scanit.facilities.empty_desc') }}</p>
-                            <a href="{{ route('facilities.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#97d700] text-[#005151] font-semibold rounded-lg hover:bg-[#85c100] transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                </svg>
-                                {{ __('scanit.facilities.empty_action') }}
-                            </a>
-                        </div>
-                    @else
-                        <div class="divide-y divide-gray-100">
-                            @foreach($facilities as $facility)
-                                <a href="{{ route('facilities.edit', $facility) }}" class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 rounded-lg bg-[#005151]/10 flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-[#005151]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-900">{{ $facility->name }}</p>
-                                            <p class="text-sm text-gray-500">{{ $facility->city }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <span class="text-sm text-gray-500">{{ __('scanit.facilities.stations_count', ['count' => $facility->stations_count]) }}</span>
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            {{-- CO2 Saved --}}
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">CO<sub>2</sub> Sparat</span>
+                    <div class="w-8 h-8 rounded-full bg-[#005151] flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-bold text-gray-900">{{ number_format($this->stats['co2']['value'], 1, ',', ' ') }}</span>
+                    <span class="text-lg text-gray-500">ton</span>
+                </div>
+                @if($this->stats['co2']['change'] != 0)
+                <div class="flex items-center text-sm {{ $this->stats['co2']['change'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    <svg class="w-4 h-4 mr-1 {{ $this->stats['co2']['change'] >= 0 ? '' : 'rotate-180' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ abs($this->stats['co2']['change']) }}%
+                </div>
+                @endif
+            </div>
+
+            {{-- Value --}}
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Värde</span>
+                    <div class="w-8 h-8 rounded-full bg-[#97d700]/20 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-[#97d700]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-bold text-gray-900">{{ number_format($this->stats['value']['value'], 0, ',', ' ') }}</span>
+                    <span class="text-lg text-gray-500">tkr</span>
+                </div>
+                @if($this->stats['value']['change'] != 0)
+                <div class="flex items-center text-sm {{ $this->stats['value']['change'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    <svg class="w-4 h-4 mr-1 {{ $this->stats['value']['change'] >= 0 ? '' : 'rotate-180' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ abs($this->stats['value']['change']) }}%
+                </div>
+                @endif
+            </div>
+
+            {{-- Visitors --}}
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Besökare</span>
+                    <div class="text-[#005151]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">{{ number_format($this->stats['visitors']['value'], 0, ',', ' ') }}</div>
+                @if($this->stats['visitors']['change'] != 0)
+                <div class="flex items-center text-sm {{ $this->stats['visitors']['change'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    <svg class="w-4 h-4 mr-1 {{ $this->stats['visitors']['change'] >= 0 ? '' : 'rotate-180' }}" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ abs($this->stats['visitors']['change']) }}%
+                </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- Charts and Categories Row --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- Chart --}}
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Hämtade föremål</h3>
+                        <p class="text-sm text-gray-500">Senaste {{ $period }} dagarna</p>
+                    </div>
+                </div>
+                <div class="h-48" wire:ignore>
+                    <canvas id="itemsChart"></canvas>
+                </div>
+            </div>
+
+            {{-- Categories --}}
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Kategorier</h3>
+                <div class="space-y-4">
+                    @forelse($this->categories as $category)
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                @switch($category['name'])
+                                    @case('Möbler')
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                                         </svg>
-                                    </div>
-                                </a>
-                            @endforeach
+                                        @break
+                                    @case('Kläder')
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                        </svg>
+                                        @break
+                                    @case('Elektronik')
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        @break
+                                    @case('Sport')
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        @break
+                                    @default
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                @endswitch
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-900">{{ $category['name'] }}</span>
+                                    <span class="text-sm font-semibold text-gray-900">{{ $category['percentage'] }}%</span>
+                                </div>
+                                <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#97d700] rounded-full" style="width: {{ $category['percentage'] }}%"></div>
+                                </div>
+                            </div>
                         </div>
-                    @endif
+                    @empty
+                        <p class="text-gray-500 text-sm text-center py-8">Ingen data för vald period</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        {{-- Stations and Activity Row --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- Stations --}}
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Stationer</h3>
+                    <span class="text-sm text-gray-500">{{ $this->activeStationsCount }} aktiva</span>
+                </div>
+                <div class="space-y-3">
+                    @forelse($this->stations as $station)
+                        <div class="flex items-center justify-between py-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full {{ $station['is_active'] ? 'bg-green-500' : 'bg-gray-300' }}"></div>
+                                <span class="text-sm font-medium text-gray-900">{{ $station['name'] }}</span>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-600">{{ number_format($station['count'], 0, ',', ' ') }}</span>
+                        </div>
+                    @empty
+                        <p class="text-gray-500 text-sm text-center py-8">Inga stationer</p>
+                    @endforelse
                 </div>
             </div>
 
             {{-- Recent Activity --}}
-            <div>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-semibold text-gray-900">{{ __('scanit.dashboard.recent_activity') }}</h2>
-                    </div>
-
-                    @if($recentActivity->isEmpty())
-                        <div class="p-8 text-center">
-                            <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-3">
-                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <p class="text-gray-500 text-sm">{{ __('scanit.dashboard.no_activity') }}</p>
-                        </div>
-                    @else
-                        <div class="divide-y divide-gray-100 max-h-96 overflow-y-auto">
-                            @foreach($recentActivity as $session)
-                                <div class="p-4">
-                                    <div class="flex items-start gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                            </svg>
-                                        </div>
-                                        <div class="min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 truncate">
-                                                {{ $session->station?->name ?? 'Station' }}
-                                            </p>
-                                            <p class="text-xs text-gray-500">
-                                                {{ $session->completed_at->diffForHumans() }}
-                                            </p>
-                                        </div>
-                                    </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Senaste aktivitet</h3>
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                </div>
+                <div class="space-y-4">
+                    @forelse($this->recentActivity as $item)
+                        <div class="flex items-center gap-4">
+                            @if($item['image_url'])
+                                <img src="{{ $item['image_url'] }}" alt="{{ $item['name'] }}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
+                            @else
+                                <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
                                 </div>
-                            @endforeach
+                            @endif
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate">{{ $item['name'] }}</p>
+                                <p class="text-xs text-gray-500">{{ $item['station'] }} • {{ $item['time_ago'] }}</p>
+                            </div>
+                            <div class="text-sm font-semibold text-[#97d700]">+{{ $item['co2_savings'] }}kg</div>
                         </div>
-                    @endif
+                    @empty
+                        <p class="text-gray-500 text-sm text-center py-8">Ingen aktivitet än</p>
+                    @endforelse
                 </div>
             </div>
         </div>
+
+        {{-- Facilities Row --}}
+        @if(count($this->facilities) > 0)
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Anläggningar</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                @foreach($this->facilities as $facility)
+                    <div class="text-center p-4 rounded-xl bg-gray-50">
+                        <div class="text-2xl font-bold text-gray-900">{{ number_format($facility['count'], 0, ',', ' ') }}</div>
+                        <div class="text-sm text-gray-500 truncate">{{ $facility['name'] }}</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
     </div>
 </div>
+
+@assets
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endassets
+
+@script
+<script>
+    const chartData = $wire.chartData;
+    const ctx = document.getElementById('itemsChart');
+
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    data: chartData.data,
+                    backgroundColor: '#97d700',
+                    borderRadius: 6,
+                    barThickness: 20,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#9ca3af' }
+                    },
+                    y: {
+                        grid: { color: '#f3f4f6' },
+                        ticks: { color: '#9ca3af' },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+@endscript
