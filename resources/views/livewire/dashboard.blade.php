@@ -254,6 +254,10 @@
     @endif
 </div>
 
+@assets
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endassets
+
 @script
 <script>
     Alpine.data('chartComponent', (initialData) => ({

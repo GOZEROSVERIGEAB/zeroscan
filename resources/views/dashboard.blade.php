@@ -10,8 +10,4 @@
             <livewire:dashboard />
         </div>
     </div>
-
-    @assets
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    @endassets
 </x-app-layout>
