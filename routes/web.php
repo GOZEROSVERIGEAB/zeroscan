@@ -10,6 +10,24 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
+| Legal Pages
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/integritetspolicy', function () {
+    return view('legal.privacy');
+})->name('legal.privacy');
+
+Route::get('/anvandarvillkor', function () {
+    return view('legal.terms');
+})->name('legal.terms');
+
+Route::get('/cookie-policy', function () {
+    return view('legal.cookies');
+})->name('legal.cookies');
+
+/*
+|--------------------------------------------------------------------------
 | OTP Authentication Routes
 |--------------------------------------------------------------------------
 */

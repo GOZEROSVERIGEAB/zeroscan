@@ -18,10 +18,9 @@ export default {
             },
             colors: {
                 prezero: {
-                    green: '#00A651',
-                    'green-dark': '#008C45',
-                    'green-light': '#4DC47D',
-                    dark: '#1A1A1A',
+                    green: '#97d700',
+                    teal: '#005151',
+                    dark: '#1a2634',
                 },
             },
         },
