@@ -29,17 +29,10 @@ class Index extends Component
     {
         $user = Auth::user();
 
-        // Try team-based first, fall back to customer-based
-        if ($user->currentTeam) {
-            return Station::whereHas('facility.customer', function ($query) use ($user) {
-                $query->where('team_id', $user->currentTeam->id);
-            })->pluck('id')->toArray();
-        }
-
-        // Fallback to customer_id
+        // Use user's customer_id to find stations
         if ($user->customer_id) {
-            return Station::whereHas('facility.customer', function ($query) use ($user) {
-                $query->where('id', $user->customer_id);
+            return Station::whereHas('facility', function ($query) use ($user) {
+                $query->where('customer_id', $user->customer_id);
             })->pluck('id')->toArray();
         }
 
@@ -219,19 +212,11 @@ class Index extends Component
         $user = Auth::user();
         $periodStart = $this->getPeriodStart();
 
-        $query = Facility::query();
-
-        if ($user->currentTeam) {
-            $query->whereHas('customer', function ($q) use ($user) {
-                $q->where('team_id', $user->currentTeam->id);
-            });
-        } elseif ($user->customer_id) {
-            $query->whereHas('customer', function ($q) use ($user) {
-                $q->where('id', $user->customer_id);
-            });
+        if (!$user->customer_id) {
+            return [];
         }
 
-        return $query
+        return Facility::where('customer_id', $user->customer_id)
             ->withCount(['inventories' => function ($q) use ($periodStart) {
                 $q->where('status', Inventory::STATUS_COMPLETED)
                     ->where('inventories.created_at', '>=', $periodStart);
