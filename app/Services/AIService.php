@@ -18,16 +18,20 @@ class AIService
     protected string $apiKey;
     protected string $baseUrl = 'https://api.anthropic.com/v1';
 
-    protected string $systemPrompt = 'Du är en expert på miljöanalys specialiserad på hållbar konsumtion och cirkulär ekonomi.
+    /**
+     * System prompt for item IDENTIFICATION ONLY.
+     * Environmental metrics are calculated separately from verified databases.
+     */
+    protected string $systemPrompt = 'Du är en expert på att identifiera och kategorisera begagnade föremål.
 
-UPPGIFT: Analysera bilden av ett återanvänt/begagnat föremål och uppskatta miljöbesparingen från att återanvända detta föremål jämfört med att köpa nytt.
+UPPGIFT: Analysera bilden och identifiera föremålet. DU SKA INTE beräkna miljöpåverkan - det hanteras av ett separat system med verifierade data.
 
 SVARA ENDAST I DETTA JSON-FORMAT:
 {
     "name": "Namn på föremålet på svenska",
-    "description": "Kort beskrivning av föremålet",
-    "category": "Kategori (Möbler/Elektronik/Kläder/Sport/Hushåll/Leksaker/Böcker/Övrigt)",
-    "subcategory": "Underkategori om tillämpligt",
+    "description": "Kort beskrivning av föremålet (max 200 tecken)",
+    "category": "Huvudkategori",
+    "subcategory": "Underkategori",
     "brand": "Märke om identifierbart, annars null",
     "model": "Modell om identifierbar, annars null",
     "materials": "Huvudmaterial (trä/metall/plast/tyg/glas/blandat)",
@@ -43,34 +47,21 @@ SVARA ENDAST I DETTA JSON-FORMAT:
         "rating": 8,
         "description": "Beskrivning av skick"
     },
-    "co2_savings": {
-        "kg": 0.0,
-        "source": "Källa för beräkning",
-        "calculation": "Hur CO2-besparingen beräknades"
-    },
-    "water_savings_liters": 0.0,
-    "energy_savings_kwh": 0.0,
     "reuse_potential": {
         "score": 8,
         "description": "Bedömning av hur lämpligt föremålet är för återbruk"
     },
-    "environmental_facts": [
-        "Intressant miljöfakta om att återanvända denna typ av föremål",
-        "Ytterligare relevant hållbarhetsfakta"
-    ],
     "confidence": 0.85
 }
 
-RIKTLINJER FÖR MILJÖBERÄKNINGAR:
-- Möbler (trä): 20-80 kg CO2-besparing, 500-2000L vattenbesparing
-- Möbler (metall): 30-120 kg CO2-besparing, 1000-5000L vattenbesparing
-- Elektronik (liten): 15-50 kg CO2-besparing, 200-800L vattenbesparing
-- Elektronik (stor): 100-400 kg CO2-besparing, 2000-10000L vattenbesparing
-- Kläder: 5-25 kg CO2-besparing per plagg, 2000-8000L vattenbesparing
-- Sportutrustning: 10-80 kg CO2-besparing, 500-3000L vattenbesparing
-- Leksaker (plast): 2-10 kg CO2-besparing, 100-500L vattenbesparing
-- Böcker: 1-3 kg CO2-besparing, 50-200L vattenbesparing
-- Hushållsartiklar: 2-30 kg CO2-besparing beroende på material
+KATEGORIER (använd dessa exakt):
+- Möbler: Soffa, Fåtölj, Stol, Kontorsstol, Matbord, Soffbord, Skrivbord, Sidobord, Bokhylla, Garderob, Byrå, Skåp, Säng, Madrass, Köksskåp
+- Elektronik: Bärbar dator, Stationär dator, Datorskärm, Surfplatta, Smartphone, TV, Högtalare, Hörlurar, Kylskåp, Tvättmaskin, Diskmaskin, Torktumlare, Dammsugare, Kaffemaskin, Skrivare
+- Kläder: T-shirt, Skjorta, Tröja, Jeans, Byxor, Kjol, Jacka, Kappa, Klänning, Skor
+- Sport & Fritid: Cykel, Skidor, Golf, Träningsutrustning, Camping
+- Leksaker: Plastleksaker, Mjukdjur, Spel
+- Böcker & Media: Bok
+- Hushåll: Köksartiklar, Hemtextil, Dekoration, Lampor
 
 SKICK (rating 1-10):
 - 10: Perfekt skick, som nytt
@@ -80,7 +71,8 @@ SKICK (rating 1-10):
 
 VIKTIGT:
 - Svara ENDAST med giltig JSON, ingen annan text
-- Basera uppskattningar på vetenskaplig livscykelanalys
+- BERÄKNA INTE miljöpåverkan (CO2, vatten, energi) - det görs av ett separat verifierat system
+- Fokusera på korrekt identifiering och kategorisering
 - Om bilden är otydlig, gör bästa möjliga bedömning med lägre confidence
 - Alla texter ska vara på svenska';
 

@@ -91,6 +91,42 @@ return [
         'welcome' => 'Welcome',
     ],
 
+    // Facilities
+    'facilities' => [
+        'stations_label' => 'Stations',
+        'stations_count' => ':count stations',
+        'archived' => 'The facility has been archived',
+        'restored' => 'The facility has been restored',
+    ],
+
+    // Stations
+    'stations' => [
+        'archived' => 'The station has been archived',
+        'restored' => 'The station has been restored',
+    ],
+
+    // Archive functionality
+    'archive' => [
+        'title' => 'Archive',
+        'will_be_deleted' => 'Will be permanently deleted :date (in :days days)',
+        'facility_confirm' => 'Are you sure you want to archive this facility? All associated stations will also be archived. You have 7 days to undo this action.',
+        'station_confirm' => 'Are you sure you want to archive this station? You have 7 days to undo this action.',
+        'grace_period_info' => 'Archived items are permanently deleted after 7 days.',
+    ],
+
+    // Actions
+    'actions' => [
+        'restore' => 'Restore',
+        'archive' => 'Archive',
+    ],
+
+    // Statistics
+    'stats' => [
+        'total_scans' => 'Total Scans',
+        'total_items' => 'Items Analyzed',
+        'total_co2' => 'CO₂ Saved (kg)',
+    ],
+
     // Public scanning flow
     'public' => [
         'title' => 'Scan',

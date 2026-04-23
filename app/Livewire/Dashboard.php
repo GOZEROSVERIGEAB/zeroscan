@@ -23,7 +23,76 @@ class Dashboard extends Component
     public function setPeriod(string $period): void
     {
         $this->period = $period;
-        $this->dispatch('chartDataUpdated', $this->chartData);
+    }
+
+    public function getChartData(): array
+    {
+        $stationIds = $this->getTeamStationIds();
+        $period = (int) $this->period;
+
+        $data = [];
+        $labels = [];
+
+        if ($period <= 7) {
+            // 7 days: Show daily data with weekday names
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i);
+                $labels[] = $date->locale('sv')->isoFormat('ddd');
+
+                $count = Inventory::whereIn('station_id', $stationIds)
+                    ->where('status', Inventory::STATUS_COMPLETED)
+                    ->whereDate('created_at', $date->toDateString())
+                    ->count();
+
+                $data[] = $count;
+            }
+        } elseif ($period <= 30) {
+            // 30 days: Show daily data with date labels
+            for ($i = 29; $i >= 0; $i--) {
+                $date = now()->subDays($i);
+                $labels[] = $date->format('j/n');
+
+                $count = Inventory::whereIn('station_id', $stationIds)
+                    ->where('status', Inventory::STATUS_COMPLETED)
+                    ->whereDate('created_at', $date->toDateString())
+                    ->count();
+
+                $data[] = $count;
+            }
+        } elseif ($period <= 90) {
+            // 90 days: Show weekly data with week numbers
+            for ($i = 12; $i >= 0; $i--) {
+                $weekStart = now()->subWeeks($i)->startOfWeek();
+                $weekEnd = now()->subWeeks($i)->endOfWeek();
+                $labels[] = 'V' . $weekStart->isoFormat('W');
+
+                $count = Inventory::whereIn('station_id', $stationIds)
+                    ->where('status', Inventory::STATUS_COMPLETED)
+                    ->whereBetween('created_at', [$weekStart, $weekEnd])
+                    ->count();
+
+                $data[] = $count;
+            }
+        } else {
+            // 365 days: Show monthly data with month names
+            for ($i = 11; $i >= 0; $i--) {
+                $monthStart = now()->subMonths($i)->startOfMonth();
+                $monthEnd = now()->subMonths($i)->endOfMonth();
+                $labels[] = $monthStart->locale('sv')->isoFormat('MMM');
+
+                $count = Inventory::whereIn('station_id', $stationIds)
+                    ->where('status', Inventory::STATUS_COMPLETED)
+                    ->whereBetween('created_at', [$monthStart, $monthEnd])
+                    ->count();
+
+                $data[] = $count;
+            }
+        }
+
+        return [
+            'labels' => $labels,
+            'data' => $data,
+        ];
     }
 
     protected function getTeamStationIds(): array
@@ -134,28 +203,7 @@ class Dashboard extends Component
 
     public function getChartDataProperty(): array
     {
-        $stationIds = $this->getTeamStationIds();
-        $days = min((int) $this->period, 30); // Max 30 days for chart
-
-        $data = [];
-        $labels = [];
-
-        for ($i = $days - 1; $i >= 0; $i--) {
-            $date = now()->subDays($i);
-            $labels[] = $date->locale('sv')->isoFormat('ddd');
-
-            $count = Inventory::whereIn('station_id', $stationIds)
-                ->where('status', Inventory::STATUS_COMPLETED)
-                ->whereDate('created_at', $date->toDateString())
-                ->count();
-
-            $data[] = $count;
-        }
-
-        return [
-            'labels' => $labels,
-            'data' => $data,
-        ];
+        return $this->getChartData();
     }
 
     public function getCategoriesProperty(): array

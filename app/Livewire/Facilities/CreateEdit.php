@@ -50,7 +50,15 @@ class CreateEdit extends Component
 
     public function mount(?Facility $facility = null): void
     {
+        $user = Auth::user();
+        $team = $user->currentTeam;
+
         if ($facility && $facility->exists) {
+            // Edit mode - require update permission
+            if (!$team || !$user->hasTeamPermission($team, 'update')) {
+                abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
+            }
+
             $this->facility = $facility;
             $this->isEdit = true;
             $this->name = $facility->name;
@@ -64,11 +72,25 @@ class CreateEdit extends Component
             $this->is_active = $facility->is_active;
             $this->branding_service_name = $facility->branding_service_name ?? '';
             $this->currentLogoUrl = $facility->branding_logo_url;
+        } else {
+            // Create mode - require create permission
+            if (!$team || !$user->hasTeamPermission($team, 'create')) {
+                abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
+            }
         }
     }
 
     public function removeLogo(): void
     {
+        $user = Auth::user();
+        $team = $user->currentTeam;
+
+        if (!$team || !$user->hasTeamPermission($team, 'update')) {
+            session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
+
+            return;
+        }
+
         if ($this->facility && $this->facility->branding_logo_path) {
             Storage::disk('public')->delete($this->facility->branding_logo_path);
             $this->facility->update(['branding_logo_path' => null]);
@@ -81,6 +103,15 @@ class CreateEdit extends Component
         $this->validate();
 
         $user = Auth::user();
+        $team = $user->currentTeam;
+
+        // Verify permission before saving
+        $requiredPermission = $this->isEdit ? 'update' : 'create';
+        if (!$team || !$user->hasTeamPermission($team, $requiredPermission)) {
+            session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
+
+            return;
+        }
 
         // Get or create customer for user
         $customer = $user->customer;

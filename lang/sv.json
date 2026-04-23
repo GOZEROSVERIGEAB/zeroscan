@@ -146,5 +146,10 @@
 
     "Administrator": "Administratör",
     "Editor": "Redaktör",
-    "Viewer": "Läsare"
+    "Viewer": "Läsare",
+
+    "Administratörer kan skapa, visa, redigera och radera anläggningar och stationer.": "Administratörer kan skapa, visa, redigera och radera anläggningar och stationer.",
+    "Redaktörer kan skapa, visa och redigera anläggningar och stationer, men kan inte radera.": "Redaktörer kan skapa, visa och redigera anläggningar och stationer, men kan inte radera.",
+    "Läsare kan endast visa anläggningar, stationer och rapporter. Kan inte skapa eller redigera.": "Läsare kan endast visa anläggningar, stationer och rapporter. Kan inte skapa eller redigera.",
+    "Du har inte behörighet att utföra denna åtgärd.": "Du har inte behörighet att utföra denna åtgärd."
 }

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\EnvironmentalCategory;
+use App\Models\EnvironmentalFactor;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -44,6 +46,10 @@ class Inventory extends Model
         'energy_savings',
         'co2_source',
         'co2_calculation_notes',
+        'environmental_category_id',
+        'environmental_factor_id',
+        'environmental_data_verified',
+        'environmental_data_source',
         'ai_confidence',
         'ai_response',
         'status',
@@ -63,6 +69,7 @@ class Inventory extends Model
         'co2_savings' => 'decimal:3',
         'water_savings' => 'decimal:3',
         'energy_savings' => 'decimal:3',
+        'environmental_data_verified' => 'boolean',
         'ai_confidence' => 'decimal:2',
         'ai_response' => 'array',
         'status' => 'integer',
@@ -87,6 +94,37 @@ class Inventory extends Model
     public function scanningSession(): BelongsTo
     {
         return $this->belongsTo(ScanningSession::class);
+    }
+
+    public function environmentalCategory(): BelongsTo
+    {
+        return $this->belongsTo(EnvironmentalCategory::class);
+    }
+
+    public function environmentalFactor(): BelongsTo
+    {
+        return $this->belongsTo(EnvironmentalFactor::class);
+    }
+
+    /**
+     * Check if this inventory has verified environmental data.
+     */
+    public function hasVerifiedEnvironmentalData(): bool
+    {
+        return $this->environmental_data_verified && $this->environmental_data_source === 'verified_database';
+    }
+
+    /**
+     * Get the environmental data source badge/label.
+     */
+    public function getEnvironmentalSourceLabel(): string
+    {
+        return match ($this->environmental_data_source) {
+            'verified_database' => 'Verifierad källa',
+            'no_data' => 'Data saknas',
+            'legacy_ai' => 'AI-estimerad (ej verifierad)',
+            default => 'Okänd',
+        };
     }
 
     public function getRouteKeyName(): string

@@ -201,15 +201,27 @@
                     <ul class="space-y-1 text-gray-600">
                         <li class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#005151]"></span>
-                            EPA & DEFRA (CO2-data)
+                            IVL Svenska Miljöinstitutet
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#005151]"></span>
-                            Water Footprint Network
+                            Naturskyddsföreningen
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="w-1.5 h-1.5 rounded-full bg-[#005151]"></span>
-                            IEA (energidata)
+                            Naturvårdsverket / RISE
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#005151]"></span>
+                            Carbonfact Fashion Database
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#005151]"></span>
+                            Nature Scientific Reports
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#005151]"></span>
+                            Inrego Elektronikrapporter
                         </li>
                     </ul>
                 </div>
@@ -234,8 +246,8 @@
             </div>
 
             <p class="mt-4 text-xs text-gray-500 italic">
-                Alla miljöbesparingar är uppskattningar baserade på AI-analys och vetenskapliga källor.
-                Faktiska värden kan variera beroende på produktens ursprung och tillverkningsmetoder.
+                Alla miljöbesparingar beräknas med verifierade data från vetenskapliga källor och livscykelanalyser (LCA).
+                AI används endast för identifiering och kategorisering av objekt. Faktiska värden kan variera beroende på produktens ursprung och tillverkningsmetoder.
             </p>
         </div>
     </div>

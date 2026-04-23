@@ -54,7 +54,15 @@ class CreateEdit extends Component
 
     public function mount(?Station $station = null): void
     {
+        $user = Auth::user();
+        $team = $user->currentTeam;
+
         if ($station && $station->exists) {
+            // Edit mode - require update permission
+            if (!$team || !$user->hasTeamPermission($team, 'update')) {
+                abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
+            }
+
             $this->station = $station;
             $this->isEdit = true;
             $this->facility_id = $station->facility_id;
@@ -70,11 +78,25 @@ class CreateEdit extends Component
             $this->use_custom_branding = $station->use_custom_branding ?? false;
             $this->branding_service_name = $station->branding_service_name ?? '';
             $this->currentLogoUrl = $station->branding_logo_path ? asset('storage/' . $station->branding_logo_path) : null;
+        } else {
+            // Create mode - require create permission
+            if (!$team || !$user->hasTeamPermission($team, 'create')) {
+                abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
+            }
         }
     }
 
     public function removeLogo(): void
     {
+        $user = Auth::user();
+        $team = $user->currentTeam;
+
+        if (!$team || !$user->hasTeamPermission($team, 'update')) {
+            session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
+
+            return;
+        }
+
         if ($this->station && $this->station->branding_logo_path) {
             Storage::disk('public')->delete($this->station->branding_logo_path);
             $this->station->update(['branding_logo_path' => null]);
@@ -93,6 +115,17 @@ class CreateEdit extends Component
     public function save(): void
     {
         $this->validate();
+
+        $user = Auth::user();
+        $team = $user->currentTeam;
+
+        // Verify permission before saving
+        $requiredPermission = $this->isEdit ? 'update' : 'create';
+        if (!$team || !$user->hasTeamPermission($team, $requiredPermission)) {
+            session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
+
+            return;
+        }
 
         $data = [
             'facility_id' => $this->facility_id,

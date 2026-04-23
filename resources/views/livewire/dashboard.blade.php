@@ -121,14 +121,27 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-900">Hämtade föremål</h3>
-                    <p class="text-sm text-gray-500">Senaste {{ $period }} dagarna</p>
-                </div>
-                <div class="flex gap-2">
-                    <button class="px-3 py-1 text-xs font-medium rounded-md bg-gray-900 text-white">V</button>
-                    <button class="px-3 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-600">D</button>
+                    <p class="text-sm text-gray-500">
+                        @switch($period)
+                            @case('7')
+                                Senaste 7 dagarna (per dag)
+                                @break
+                            @case('30')
+                                Senaste 30 dagarna (per dag)
+                                @break
+                            @case('90')
+                                Senaste 90 dagarna (per vecka)
+                                @break
+                            @case('365')
+                                Senaste 12 månaderna (per månad)
+                                @break
+                            @default
+                                Senaste {{ $period }} dagarna
+                        @endswitch
+                    </p>
                 </div>
             </div>
-            <div class="h-48" wire:ignore x-data="chartComponent(@js($this->chartData))" x-init="initChart()">
+            <div class="h-48" wire:key="chart-{{ $period }}" x-data="chartComponent(@js($this->chartData))" x-init="initChart()">
                 <canvas x-ref="chart"></canvas>
             </div>
         </div>
@@ -274,7 +287,8 @@
                         data: this.chartData.data,
                         backgroundColor: '#97d700',
                         borderRadius: 6,
-                        barThickness: 20,
+                        barThickness: 'flex',
+                        maxBarThickness: 30,
                     }]
                 },
                 options: {
@@ -286,7 +300,11 @@
                     scales: {
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#9ca3af' }
+                            ticks: {
+                                color: '#9ca3af',
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
                         },
                         y: {
                             grid: { color: '#f3f4f6' },
@@ -295,12 +313,6 @@
                         }
                     }
                 }
-            });
-
-            Livewire.on('chartDataUpdated', (data) => {
-                this.chart.data.labels = data[0].labels;
-                this.chart.data.datasets[0].data = data[0].data;
-                this.chart.update();
             });
         }
     }));

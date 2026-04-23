@@ -45,17 +45,21 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::role('admin', 'Administrator', [
+        Jetstream::role('admin', __('Administrator'), [
             'create',
             'read',
             'update',
             'delete',
-        ])->description('Administrator users can perform any action.');
+        ])->description(__('Administratörer kan skapa, visa, redigera och radera anläggningar och stationer.'));
 
-        Jetstream::role('editor', 'Editor', [
+        Jetstream::role('editor', __('Editor'), [
             'read',
             'create',
             'update',
-        ])->description('Editor users have the ability to read, create, and update.');
+        ])->description(__('Redaktörer kan skapa, visa och redigera anläggningar och stationer, men kan inte radera.'));
+
+        Jetstream::role('viewer', __('Viewer'), [
+            'read',
+        ])->description(__('Läsare kan endast visa anläggningar, stationer och rapporter. Kan inte skapa eller redigera.'));
     }
 }
