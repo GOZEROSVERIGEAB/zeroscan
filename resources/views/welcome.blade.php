@@ -3,7 +3,7 @@
     <nav class="sticky top-0 z-50 backdrop-blur-[14px] bg-bg/80 border-b border-line">
         <div class="max-w-[1360px] mx-auto px-8 py-[18px] flex items-center gap-8">
             {{-- Brand --}}
-            <a href="#" class="flex items-center gap-2.5" aria-label="ZeroScan">
+            <a href="#" class="flex items-center gap-2.5" aria-label="PreZero Scanit">
                 <img src="{{ asset('images/prezero-logo.svg') }}" alt="PreZero" class="h-[26px]">
                 <span class="font-display font-semibold text-[22px] tracking-tight text-green-ink">+</span>
             </a>
@@ -49,7 +49,7 @@
 
                 {{-- Lede --}}
                 <p class="text-[19px] text-muted max-w-[520px] mb-9 leading-normal" data-reveal data-delay="2">
-                    ZeroScan hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan. Ge era kunder personlig CO₂-feedback och få CSRD-redo data.
+                    PreZero Scanit hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan. Ge era kunder personlig CO₂-feedback och få CSRD-redo data.
                 </p>
 
                 {{-- Actions --}}
@@ -491,7 +491,7 @@
                 CO₂-siffror du kan lita på
             </h2>
             <p class="text-muted max-w-[700px] mx-auto mb-6">
-                All miljödata i ZeroScan kommer från officiella vetenskapliga källor — <strong>aldrig AI-gissningar</strong>.
+                All miljödata i PreZero Scanit kommer från officiella vetenskapliga källor — <strong>aldrig AI-gissningar</strong>.
                 Vi använder livscykelanalyser (LCA) enligt ISO 14040-44 från svenska myndigheter och forskningsinstitut.
             </p>
             <div class="flex flex-wrap justify-center gap-3 text-xs">
@@ -848,7 +848,7 @@
                         Redo att mäta er miljöpåverkan?
                     </h2>
                     <p class="text-muted text-[17px] max-w-[460px] mb-6" data-reveal data-delay="2">
-                        Boka en kostnadsfri demo och se hur ZeroScan kan hjälpa er dokumentera återbruk med verkliga siffror.
+                        Boka en kostnadsfri demo och se hur PreZero Scanit kan hjälpa er dokumentera återbruk med verkliga siffror.
                     </p>
                     <div class="space-y-3" data-reveal data-delay="3">
                         <div class="flex items-center gap-3 text-sm text-muted">
@@ -899,7 +899,7 @@
                             Boka demo <span class="group-hover:translate-x-0.5 transition-transform">→</span>
                         </button>
                         <p class="text-[12.5px] text-muted pt-2">
-                            Genom att skicka godkänner du att vi kontaktar dig angående ZeroScan. Vi delar aldrig dina uppgifter med tredje part.
+                            Genom att skicka godkänner du att vi kontaktar dig angående PreZero Scanit. Vi delar aldrig dina uppgifter med tredje part.
                         </p>
                     </form>
 
@@ -925,7 +925,7 @@
                         <span class="font-display font-semibold text-[26px] tracking-tight text-green">+</span>
                     </div>
                     <p class="text-[14.5px] opacity-70 max-w-[340px]">
-                        ZeroScan hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan.
+                        PreZero Scanit hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan.
                     </p>
                 </div>
 
