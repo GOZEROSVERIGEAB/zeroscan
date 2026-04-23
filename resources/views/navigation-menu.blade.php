@@ -21,6 +21,9 @@
                     <x-nav-link href="{{ route('stations.index') }}" :active="request()->routeIs('stations.*')">
                         {{ __('scanit.nav.stations') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('reports.index') }}" :active="request()->routeIs('reports.*')">
+                        {{ __('scanit.nav.reports') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -155,6 +158,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('stations.index') }}" :active="request()->routeIs('stations.*')">
                 {{ __('scanit.nav.stations') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('reports.index') }}" :active="request()->routeIs('reports.*')">
+                {{ __('scanit.nav.reports') }}
             </x-responsive-nav-link>
         </div>
 

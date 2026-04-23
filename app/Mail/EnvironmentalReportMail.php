@@ -29,6 +29,7 @@ class EnvironmentalReportMail extends Mailable implements ShouldQueue
     public string $visitorName;
     public string $stationName;
     public ?string $logoUrl;
+    public array $aiSources;
 
     public function __construct(ScanningSession $session)
     {
@@ -37,6 +38,7 @@ class EnvironmentalReportMail extends Mailable implements ShouldQueue
         $this->calculateTotals();
         $this->setupBranding();
         $this->calculateEnvironmentalComparisons();
+        $this->collectAiSources();
     }
 
     protected function calculateTotals(): void
@@ -117,6 +119,36 @@ class EnvironmentalReportMail extends Mailable implements ShouldQueue
         $this->phoneChargesEquivalent = $this->totalEnergy / 0.012;
     }
 
+    protected function collectAiSources(): void
+    {
+        $inventories = $this->session->inventories;
+
+        // Get unique AI providers and models used
+        $providers = $inventories->pluck('ai_provider')->filter()->unique()->values()->toArray();
+        $models = $inventories->pluck('ai_model')->filter()->unique()->values()->toArray();
+
+        // Calculate average confidence
+        $avgConfidence = $inventories->avg('ai_confidence') ?? 0;
+
+        $this->aiSources = [
+            'providers' => $providers,
+            'models' => $models,
+            'avg_confidence' => round($avgConfidence * 100, 1),
+            'analyzed_at' => now()->format('Y-m-d H:i'),
+            'data_sources' => [
+                'CO2-beräkningar baseras på livscykelanalyser (LCA) från EPA, DEFRA och vetenskapliga publikationer',
+                'Vattenförbrukning baseras på Water Footprint Network data',
+                'Energiförbrukning baseras på IEA och branschstandarder',
+            ],
+            'equivalents_sources' => [
+                'trees' => 'EPA: 1 träd absorberar ~21 kg CO2/år',
+                'car_km' => 'Naturvårdsverket: genomsnittlig bil ~120g CO2/km',
+                'showers' => 'Svenskt Vatten: genomsnittlig dusch ~65 liter',
+                'phone_charges' => 'IEA: mobilladdning ~0.012 kWh',
+            ],
+        ];
+    }
+
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -144,6 +176,7 @@ class EnvironmentalReportMail extends Mailable implements ShouldQueue
                 'carKmEquivalent' => $this->carKmEquivalent,
                 'showerEquivalent' => $this->showerEquivalent,
                 'phoneChargesEquivalent' => $this->phoneChargesEquivalent,
+                'aiSources' => $this->aiSources,
             ],
         );
     }

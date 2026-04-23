@@ -54,9 +54,9 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->group(function () {
+])->prefix('dashboard')->group(function () {
     // Dashboard
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
 
@@ -70,6 +70,14 @@ Route::middleware([
     Route::get('/stations/create', \App\Livewire\Stations\CreateEdit::class)->name('stations.create');
     Route::get('/stations/{station}/edit', \App\Livewire\Stations\CreateEdit::class)->name('stations.edit');
     Route::get('/stations/{station}/qr', \App\Livewire\Stations\QrCode::class)->name('stations.qr');
+
+    // Reports
+    Route::get('/reports', \App\Livewire\Reports\Overview::class)->name('reports.index');
+    Route::get('/reports/environment', \App\Livewire\Reports\EnvironmentImpact::class)->name('reports.environment');
+    Route::get('/reports/csrd', \App\Livewire\Reports\CsrdReport::class)->name('reports.csrd');
+    Route::get('/reports/inventory', \App\Livewire\Reports\InventoryAnalytics::class)->name('reports.inventory');
+    Route::get('/reports/exports', \App\Livewire\Reports\ExportCenter::class)->name('reports.exports');
+    Route::get('/reports/export/{type}/{format}', [\App\Http\Controllers\Reports\ReportExportController::class, 'export'])->name('reports.export');
 });
 
 /*

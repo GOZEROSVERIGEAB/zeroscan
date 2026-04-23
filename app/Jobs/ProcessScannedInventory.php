@@ -100,6 +100,8 @@ class ProcessScannedInventory implements ShouldQueue
             'co2_savings' => $data['co2_savings']['kg'] ?? null,
             'co2_source' => $data['co2_savings']['source'] ?? null,
             'co2_calculation_notes' => $data['co2_savings']['calculation'] ?? null,
+            'water_savings' => $data['water_savings_liters'] ?? null,
+            'energy_savings' => $data['energy_savings_kwh'] ?? null,
             'ai_confidence' => $data['confidence'] ?? null,
             'ai_provider' => $response->provider,
             'ai_model' => $response->model,

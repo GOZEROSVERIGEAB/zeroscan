@@ -741,6 +741,51 @@
                             <span class="share-hashtag">#VäljÅterbruk #HållbarFramtid</span>
                         </div>
 
+                        <!-- AI Sources & Methodology Section -->
+                        @if(isset($aiSources))
+                        <div style="padding: 30px 40px; background: #f8fafb; border-top: 1px solid #e5e9ee;">
+                            <h3 style="font-size: 14px; font-weight: 700; color: #005151; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">
+                                &#128300; Så har vi räknat - Källor & Metodik
+                            </h3>
+
+                            <div style="background: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #e5e9ee;">
+                                <p style="font-size: 13px; font-weight: 600; color: #1a2634; margin-bottom: 10px;">AI-analys</p>
+                                <p style="font-size: 12px; color: #64748b; margin-bottom: 8px;">
+                                    <strong>Modell:</strong> {{ implode(', ', $aiSources['models'] ?? ['Anthropic Claude']) }}
+                                </p>
+                                <p style="font-size: 12px; color: #64748b; margin-bottom: 8px;">
+                                    <strong>Leverantör:</strong> {{ implode(', ', $aiSources['providers'] ?? ['Anthropic']) }}
+                                </p>
+                                <p style="font-size: 12px; color: #64748b;">
+                                    <strong>Genomsnittlig konfidens:</strong> {{ $aiSources['avg_confidence'] ?? 0 }}%
+                                </p>
+                            </div>
+
+                            <div style="background: #ffffff; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #e5e9ee;">
+                                <p style="font-size: 13px; font-weight: 600; color: #1a2634; margin-bottom: 10px;">Datakällor för miljöberäkningar</p>
+                                <ul style="font-size: 11px; color: #64748b; margin: 0; padding-left: 20px; line-height: 1.8;">
+                                    @foreach($aiSources['data_sources'] ?? [] as $source)
+                                        <li>{{ $source }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <div style="background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #e5e9ee;">
+                                <p style="font-size: 13px; font-weight: 600; color: #1a2634; margin-bottom: 10px;">Miljöekvivalenter - Referenser</p>
+                                <ul style="font-size: 11px; color: #64748b; margin: 0; padding-left: 20px; line-height: 1.8;">
+                                    @foreach($aiSources['equivalents_sources'] ?? [] as $key => $source)
+                                        <li>{{ $source }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <p style="font-size: 10px; color: #9ca3af; margin-top: 15px; text-align: center; font-style: italic;">
+                                Alla värden är uppskattningar baserade på AI-analys och vetenskapliga källor.
+                                Faktiska miljöbesparingar kan variera beroende på produktens ursprung och tillverkningsmetoder.
+                            </p>
+                        </div>
+                        @endif
+
                         <!-- Footer -->
                         <div class="footer">
                             <div class="footer-brand">

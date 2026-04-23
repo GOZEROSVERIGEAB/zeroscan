@@ -321,6 +321,28 @@
                 </table>
             </div>
 
+            <!-- AI Sources & Methodology -->
+            @if(isset($aiSources))
+            <div style="background-color: #f8fafc; border-radius: 8px; padding: 15px; margin-bottom: 20px; font-size: 11px;">
+                <div style="font-weight: 600; margin-bottom: 10px; color: #1f2937;">Källor & Metodik</div>
+
+                <div style="margin-bottom: 10px;">
+                    <strong style="color: #374151;">AI-analys:</strong>
+                    <span style="color: #6b7280;">{{ implode(', ', $aiSources['models'] ?? ['Anthropic Claude']) }} ({{ implode(', ', $aiSources['providers'] ?? ['Anthropic']) }})</span>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <strong style="color: #374151;">Datakällor:</strong>
+                    <span style="color: #6b7280;">EPA, DEFRA, Water Footprint Network, IEA, Naturvårdsverket</span>
+                </div>
+
+                <div>
+                    <strong style="color: #374151;">Miljöekvivalenter:</strong>
+                    <span style="color: #6b7280;">1 träd=21kg CO₂/år (EPA), 1 dusch=65L (Svenskt Vatten), 1 mobilladdning=0.012kWh (IEA)</span>
+                </div>
+            </div>
+            @endif
+
             <!-- Disclaimer -->
             <div class="disclaimer">
                 <div class="disclaimer-title">{{ __('scanit.email.disclaimer_title') }}</div>
