@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\CustomerMonthlyUsage;
 use App\Models\Inventory;
 use App\Notifications\EnvironmentReportNotification;
 use App\Services\AIResponse;
@@ -41,7 +42,7 @@ class ProcessScannedInventory implements ShouldQueue
 
             $imagePath = $this->inventory->image_path;
 
-            if (!Storage::disk('public')->exists($imagePath)) {
+            if (! Storage::disk('public')->exists($imagePath)) {
                 throw new \RuntimeException("Image not found: {$imagePath}");
             }
 
@@ -83,9 +84,9 @@ class ProcessScannedInventory implements ShouldQueue
     /**
      * Update inventory with AI identification and VERIFIED environmental metrics.
      *
-     * @param AIResponse $response AI response object
-     * @param array<string, mixed> $aiData AI identification data
-     * @param array<string, mixed> $envMetrics Verified environmental metrics from database
+     * @param  AIResponse  $response  AI response object
+     * @param  array<string, mixed>  $aiData  AI identification data
+     * @param  array<string, mixed>  $envMetrics  Verified environmental metrics from database
      */
     protected function updateInventoryWithVerifiedData(AIResponse $response, array $aiData, array $envMetrics): void
     {
@@ -103,7 +104,7 @@ class ProcessScannedInventory implements ShouldQueue
             );
 
             if ($sourceInfo['url']) {
-                $co2Notes .= ' URL: ' . $sourceInfo['url'];
+                $co2Notes .= ' URL: '.$sourceInfo['url'];
             }
         } elseif ($envMetrics['data_source'] === 'no_data') {
             $co2Source = 'Ingen verifierad data tillgänglig';
@@ -167,13 +168,31 @@ class ProcessScannedInventory implements ShouldQueue
             'data_source' => $envMetrics['data_source'],
             'is_verified' => $envMetrics['verification']['is_verified'] ?? false,
         ]);
+
+        // Track monthly usage for the customer
+        $this->incrementCustomerUsage();
+    }
+
+    protected function incrementCustomerUsage(): void
+    {
+        $station = $this->inventory->station;
+
+        if (! $station) {
+            return;
+        }
+
+        $customerId = $station->facility?->customer_id;
+
+        if ($customerId) {
+            CustomerMonthlyUsage::incrementScanCount($customerId);
+        }
     }
 
     protected function checkAndSendReport(): void
     {
         $session = $this->inventory->scanningSession;
 
-        if (!$session) {
+        if (! $session) {
             return;
         }
 
@@ -181,7 +200,7 @@ class ProcessScannedInventory implements ShouldQueue
             ->whereNotIn('status', [Inventory::STATUS_COMPLETED, Inventory::STATUS_ERROR])
             ->count();
 
-        if ($pendingCount === 0 && $session->email && !$session->report_sent) {
+        if ($pendingCount === 0 && $session->email && ! $session->report_sent) {
             Notification::route('mail', $session->email)
                 ->notify(new EnvironmentReportNotification($session));
 
