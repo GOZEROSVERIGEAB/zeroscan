@@ -28,6 +28,7 @@ class InventoryAnalytics extends Component
     public ?string $category = null;
 
     public ?string $customStartDate = null;
+
     public ?string $customEndDate = null;
 
     public function mount(): void

@@ -18,7 +18,9 @@ use Illuminate\View\View;
 class OtpController extends Controller
 {
     private const MAX_OTP_ATTEMPTS = 5;
+
     private const MAX_VERIFY_ATTEMPTS = 5;
+
     private const DECAY_MINUTES = 10;
 
     public function showLoginForm(): View
@@ -28,7 +30,7 @@ class OtpController extends Controller
 
     public function sendOtp(Request $request): RedirectResponse
     {
-        $throttleKey = 'otp-send:' . $request->ip();
+        $throttleKey = 'otp-send:'.$request->ip();
 
         if (RateLimiter::tooManyAttempts($throttleKey, self::MAX_OTP_ATTEMPTS)) {
             $seconds = RateLimiter::availableIn($throttleKey);
@@ -70,7 +72,7 @@ class OtpController extends Controller
                 // Create personal team for the user
                 $team = Team::create([
                     'user_id' => $user->id,
-                    'name' => $name . "'s Team",
+                    'name' => $name."'s Team",
                     'personal_team' => true,
                 ]);
 

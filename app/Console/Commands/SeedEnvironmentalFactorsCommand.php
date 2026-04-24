@@ -2,6 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\EnvironmentalCategory;
+use App\Models\EnvironmentalFactor;
+use App\Models\EnvironmentalSource;
+use App\Services\EnvironmentalFactorService;
 use Database\Seeders\EnvironmentalFactorsSeeder;
 use Illuminate\Console\Command;
 
@@ -15,7 +19,7 @@ class SeedEnvironmentalFactorsCommand extends Command
     public function handle(): int
     {
         if ($this->option('fresh')) {
-            if (!$this->confirm('This will delete ALL existing environmental data. Continue?')) {
+            if (! $this->confirm('This will delete ALL existing environmental data. Continue?')) {
                 $this->info('Aborted.');
 
                 return self::SUCCESS;
@@ -23,34 +27,34 @@ class SeedEnvironmentalFactorsCommand extends Command
 
             $this->info('Clearing existing environmental data...');
 
-            \App\Models\EnvironmentalFactor::query()->delete();
-            \App\Models\EnvironmentalCategory::query()->delete();
-            \App\Models\EnvironmentalSource::query()->delete();
+            EnvironmentalFactor::query()->delete();
+            EnvironmentalCategory::query()->delete();
+            EnvironmentalSource::query()->delete();
 
             $this->info('Cleared.');
         }
 
         $this->info('Seeding environmental factors from verified sources...');
 
-        $seeder = new EnvironmentalFactorsSeeder();
+        $seeder = new EnvironmentalFactorsSeeder;
         $seeder->run();
 
         // Clear cache
-        $factorService = app(\App\Services\EnvironmentalFactorService::class);
+        $factorService = app(EnvironmentalFactorService::class);
         $factorService->clearCache();
 
-        $categoryCount = \App\Models\EnvironmentalCategory::count();
-        $factorCount = \App\Models\EnvironmentalFactor::count();
-        $sourceCount = \App\Models\EnvironmentalSource::count();
+        $categoryCount = EnvironmentalCategory::count();
+        $factorCount = EnvironmentalFactor::count();
+        $sourceCount = EnvironmentalSource::count();
 
-        $this->info("Done! Seeded:");
+        $this->info('Done! Seeded:');
         $this->line("  - {$sourceCount} verified sources");
         $this->line("  - {$categoryCount} product categories");
         $this->line("  - {$factorCount} environmental factors");
 
         $this->newLine();
         $this->info('Sources used:');
-        foreach (\App\Models\EnvironmentalSource::all() as $source) {
+        foreach (EnvironmentalSource::all() as $source) {
             $this->line("  - {$source->organization}: {$source->report_title}");
         }
 

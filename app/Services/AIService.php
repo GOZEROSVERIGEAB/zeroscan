@@ -11,11 +11,15 @@ use RuntimeException;
 class AIService
 {
     protected const API_VERSION = '2023-06-01';
+
     protected const MODEL = 'claude-opus-4-7';
+
     protected const MAX_TOKENS = 4096;
+
     protected const TIMEOUT = 120;
 
     protected string $apiKey;
+
     protected string $baseUrl = 'https://api.anthropic.com/v1';
 
     /**
@@ -88,9 +92,10 @@ VIKTIGT:
     /**
      * Analyze an image for environmental impact assessment.
      *
-     * @param string $base64Image Base64 encoded image data
-     * @param string $mimeType Image MIME type
+     * @param  string  $base64Image  Base64 encoded image data
+     * @param  string  $mimeType  Image MIME type
      * @return AIResponse Structured environmental analysis data
+     *
      * @throws RuntimeException If API call fails
      */
     public function analyzeImage(string $base64Image, string $mimeType): AIResponse
@@ -105,14 +110,14 @@ VIKTIGT:
     /**
      * Analyze an image from a storage path.
      *
-     * @param string $storagePath Path relative to public disk
+     * @param  string  $storagePath  Path relative to public disk
      * @return AIResponse Structured environmental analysis data
      */
     public function analyzeImageFromPath(string $storagePath): AIResponse
     {
         $fullPath = Storage::disk('public')->path($storagePath);
-        
-        if (!file_exists($fullPath)) {
+
+        if (! file_exists($fullPath)) {
             throw new RuntimeException("Image file not found: {$storagePath}");
         }
 
@@ -173,7 +178,7 @@ VIKTIGT:
                     ],
                 ]);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 Log::error('AIService: API request failed', [
                     'status' => $response->status(),
                     'body' => $response->body(),

@@ -53,6 +53,7 @@ class Index extends Component
     protected function getPreviousPeriodStart(): Carbon
     {
         $days = (int) $this->period;
+
         return $this->getPeriodStart()->subDays($days);
     }
 
@@ -212,7 +213,7 @@ class Index extends Component
         $user = Auth::user();
         $periodStart = $this->getPeriodStart();
 
-        if (!$user->customer_id) {
+        if (! $user->customer_id) {
             return [];
         }
 

@@ -2,17 +2,22 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Mail;
 use Coderflex\LaravelTurnstile\Rules\TurnstileCheck;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
 
 class ContactForm extends Component
 {
     public string $name = '';
+
     public string $email = '';
+
     public string $company = '';
+
     public string $phone = '';
+
     public string $message = '';
+
     public string $cfTurnstileResponse = '';
 
     public bool $submitted = false;
@@ -25,7 +30,7 @@ class ContactForm extends Component
             'company' => ['required', 'string', 'min:2', 'max:100'],
             'phone' => ['nullable', 'string', 'max:20'],
             'message' => ['required', 'string', 'min:10', 'max:2000'],
-            'cfTurnstileResponse' => ['required', new TurnstileCheck()],
+            'cfTurnstileResponse' => ['required', new TurnstileCheck],
         ];
     }
 
@@ -45,15 +50,15 @@ class ContactForm extends Component
         $this->validate();
 
         Mail::raw(
-            "Nytt kontaktformulär från Scanit\n\n" .
-            "Namn: {$this->name}\n" .
-            "E-post: {$this->email}\n" .
-            "Företag: {$this->company}\n" .
-            "Telefon: {$this->phone}\n\n" .
+            "Nytt kontaktformulär från Scanit\n\n".
+            "Namn: {$this->name}\n".
+            "E-post: {$this->email}\n".
+            "Företag: {$this->company}\n".
+            "Telefon: {$this->phone}\n\n".
             "Meddelande:\n{$this->message}",
             function ($mail) {
                 $mail->to('emilia.mastad@prezero.com')
-                    ->subject('Kontaktförfrågan från Scanit - ' . $this->company)
+                    ->subject('Kontaktförfrågan från Scanit - '.$this->company)
                     ->replyTo($this->email, $this->name);
             }
         );

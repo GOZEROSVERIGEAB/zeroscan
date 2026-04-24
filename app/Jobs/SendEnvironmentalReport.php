@@ -32,7 +32,7 @@ class SendEnvironmentalReport implements ShouldQueue
 
     public function handle(): void
     {
-        if (!$this->session->email) {
+        if (! $this->session->email) {
             Log::warning('SendEnvironmentalReport: No email provided for session', [
                 'session_id' => $this->session->id,
             ]);

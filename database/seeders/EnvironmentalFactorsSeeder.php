@@ -1256,7 +1256,7 @@ class EnvironmentalFactorsSeeder extends Seeder
     {
         $category = EnvironmentalCategory::where('slug', $categorySlug)->first();
 
-        if (!$category) {
+        if (! $category) {
             return;
         }
 

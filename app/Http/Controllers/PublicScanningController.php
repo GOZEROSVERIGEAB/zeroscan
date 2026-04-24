@@ -28,7 +28,7 @@ class PublicScanningController extends Controller
 
         $renderer = new ImageRenderer(
             new RendererStyle(400, 2),
-            new SvgImageBackEnd()
+            new SvgImageBackEnd
         );
 
         $writer = new Writer($renderer);

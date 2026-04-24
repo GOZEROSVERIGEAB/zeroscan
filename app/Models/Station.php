@@ -52,7 +52,7 @@ class Station extends Model
         // If station has custom branding enabled, use it
         if ($this->use_custom_branding && ($this->branding_logo_path || $this->branding_service_name)) {
             return [
-                'logo_url' => $this->branding_logo_path ? asset('storage/' . $this->branding_logo_path) : null,
+                'logo_url' => $this->branding_logo_path ? asset('storage/'.$this->branding_logo_path) : null,
                 'service_name' => $this->branding_service_name,
                 'has_custom' => true,
             ];

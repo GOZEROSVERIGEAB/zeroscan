@@ -3,7 +3,7 @@
     <nav class="sticky top-0 z-50 backdrop-blur-[14px] bg-bg/80 border-b border-line">
         <div class="max-w-[1360px] mx-auto px-8 py-[18px] flex items-center gap-8">
             {{-- Brand --}}
-            <a href="#" class="flex items-center gap-2.5" aria-label="PreZero Scanit">
+            <a href="#" class="flex items-center gap-2.5" aria-label="Scanit">
                 <img src="{{ asset('images/prezero-logo.svg') }}" alt="PreZero" class="h-[26px]">
                 <span class="font-display font-semibold text-[22px] tracking-tight text-green-ink">+</span>
             </a>
@@ -14,7 +14,6 @@
                 <a href="#anvandningsfall" class="text-sm font-medium text-ink/75 hover:text-teal hover:opacity-100 transition-colors">Användningsfall</a>
                 <a href="#rapporter" class="text-sm font-medium text-ink/75 hover:text-teal hover:opacity-100 transition-colors">Rapporter</a>
                 <a href="#priser" class="text-sm font-medium text-ink/75 hover:text-teal hover:opacity-100 transition-colors">Priser</a>
-                <a href="{{ route('reports.index') }}" class="text-sm font-medium text-green-ink hover:text-teal transition-colors">Demo</a>
             </div>
 
             {{-- CTA buttons --}}
@@ -49,7 +48,7 @@
 
                 {{-- Lede --}}
                 <p class="text-[19px] text-muted max-w-[520px] mb-9 leading-normal" data-reveal data-delay="2">
-                    PreZero Scanit hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan. Ge era kunder personlig CO₂-feedback och få CSRD-redo data.
+                    Scanit hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan. Ge era kunder personlig CO₂-feedback och få CSRD-redo data.
                 </p>
 
                 {{-- Actions --}}
@@ -160,11 +159,15 @@
                         <div class="bg-bg/30 rounded-xl p-4 mb-4">
                             <div class="flex items-center justify-between mb-3">
                                 <span class="text-xs font-medium text-ink">Hämtade föremål</span>
-                                <span class="text-[10px] text-muted">Senaste 30 dagarna</span>
+                                <div class="flex items-center gap-1 bg-white/50 rounded-lg p-0.5">
+                                    <span class="text-[9px] text-muted px-2 py-0.5 rounded">7 dagar</span>
+                                    <span class="text-[9px] text-ink bg-white px-2 py-0.5 rounded shadow-sm font-medium">30 dagar</span>
+                                    <span class="text-[9px] text-muted px-2 py-0.5 rounded">12 mån</span>
+                                </div>
                             </div>
                             <div class="flex items-end gap-1 h-16">
                                 @foreach ([45, 62, 38, 75, 52, 88, 65, 70, 55, 82, 48, 95, 72, 60, 78] as $height)
-                                    <div class="flex-1 bg-green/{{ $loop->last ? '100' : '60' }} rounded-t" style="height: {{ $height }}%"></div>
+                                    <div class="flex-1 rounded-t" style="height: {{ $height }}%; background-color: {{ $loop->last ? '#97d700' : 'rgba(151, 215, 0, 0.6)' }};"></div>
                                 @endforeach
                             </div>
                         </div>
@@ -491,7 +494,7 @@
                 CO₂-siffror du kan lita på
             </h2>
             <p class="text-muted max-w-[700px] mx-auto mb-6">
-                All miljödata i PreZero Scanit kommer från officiella vetenskapliga källor — <strong>aldrig AI-gissningar</strong>.
+                All miljödata i Scanit kommer från officiella vetenskapliga källor — <strong>aldrig AI-gissningar</strong>.
                 Vi använder livscykelanalyser (LCA) enligt ISO 14040-44 från svenska myndigheter och forskningsinstitut.
             </p>
             <div class="flex flex-wrap justify-center gap-3 text-xs">
@@ -725,7 +728,7 @@
                         </svg>
                     </div>
                     <h3 class="font-display font-semibold text-lg mb-2">GDPR-säkert</h3>
-                    <p class="text-sm text-muted">All data lagras i Sverige. Samtycke före e-post. Full transparens och kontroll.</p>
+                    <p class="text-sm text-muted">All data lagras i Norden. Samtycke före e-post. Full transparens och kontroll.</p>
                 </div>
             </div>
         </div>
@@ -815,8 +818,7 @@
         <div class="max-w-[1360px] mx-auto">
             <div class="flex flex-wrap items-center justify-center gap-6 md:gap-10">
                 <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-line">
-                    <img src="{{ asset('images/prezero-logo.svg') }}" alt="PreZero" class="h-5">
-                    <span class="text-sm text-muted">Powered by PreZero</span>
+                    <span class="text-sm text-muted">Powered by GoZero</span>
                 </div>
                 <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-line">
                     <svg class="w-5 h-5 text-green-ink" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
@@ -824,7 +826,7 @@
                 </div>
                 <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-line">
                     <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/></svg>
-                    <span class="text-sm text-muted">Data lagras i Sverige</span>
+                    <span class="text-sm text-muted">Data lagras i Norden</span>
                 </div>
                 <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-line">
                     <span class="text-sm font-medium text-purple-600">Anthropic</span>
@@ -848,7 +850,7 @@
                         Redo att mäta er miljöpåverkan?
                     </h2>
                     <p class="text-muted text-[17px] max-w-[460px] mb-6" data-reveal data-delay="2">
-                        Boka en kostnadsfri demo och se hur PreZero Scanit kan hjälpa er dokumentera återbruk med verkliga siffror.
+                        Boka en kostnadsfri demo och se hur Scanit kan hjälpa er dokumentera återbruk med verkliga siffror.
                     </p>
                     <div class="space-y-3" data-reveal data-delay="3">
                         <div class="flex items-center gap-3 text-sm text-muted">
@@ -899,7 +901,7 @@
                             Boka demo <span class="group-hover:translate-x-0.5 transition-transform">→</span>
                         </button>
                         <p class="text-[12.5px] text-muted pt-2">
-                            Genom att skicka godkänner du att vi kontaktar dig angående PreZero Scanit. Vi delar aldrig dina uppgifter med tredje part.
+                            Genom att skicka godkänner du att vi kontaktar dig angående Scanit. Vi delar aldrig dina uppgifter med tredje part.
                         </p>
                     </form>
 
@@ -925,7 +927,7 @@
                         <span class="font-display font-semibold text-[26px] tracking-tight text-green">+</span>
                     </div>
                     <p class="text-[14.5px] opacity-70 max-w-[340px]">
-                        PreZero Scanit hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan.
+                        Scanit hjälper återvinningscentraler, secondhand-butiker och byggåterbruk att mäta och rapportera sin miljöpåverkan.
                     </p>
                 </div>
 
@@ -946,7 +948,6 @@
                     <ul class="space-y-2.5">
                         <li><a href="https://www.prezero.se" target="_blank" rel="noopener noreferrer" class="text-[14.5px] text-bg/80 hover:text-green hover:opacity-100 transition-colors">PreZero.se ↗</a></li>
                         <li><a href="#kontakt" class="text-[14.5px] text-bg/80 hover:text-green hover:opacity-100 transition-colors">Kontakt</a></li>
-                        <li><a href="{{ route('reports.index') }}" class="text-[14.5px] text-bg/80 hover:text-green hover:opacity-100 transition-colors">Demo</a></li>
                     </ul>
                 </div>
 
@@ -962,9 +963,12 @@
             </div>
 
             {{-- Bottom bar --}}
-            <div class="flex flex-wrap justify-between items-center gap-4 mt-8 text-[13px] opacity-55">
-                <div>© 2026 PreZero Sverige AB</div>
-                <div>Utvecklad av <span class="text-green">GoZero Sverige AB</span> — ett techbolag i PreZero-koncernen</div>
+            <div class="flex flex-col md:flex-row md:justify-between items-center gap-4 mt-8 text-[13px] opacity-55">
+                <div>© 2026 GoZero Sverige AB — Ett techföretag inom PreZero koncernen</div>
+                <div class="text-center md:text-right">
+                    <div>Blomstergatan 6, 591 70 Motala</div>
+                    <div>Kontakt: <a href="mailto:emilia.mastad@prezero.com" class="hover:text-green">emilia.mastad@prezero.com</a> | <a href="mailto:andreas@gozero.se" class="hover:text-green">andreas@gozero.se</a></div>
+                </div>
             </div>
         </div>
     </footer>

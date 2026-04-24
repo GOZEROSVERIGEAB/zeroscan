@@ -123,11 +123,11 @@ class EnvironmentalFactor extends Model
         $parts = [$this->source_name];
 
         if ($this->source_publication_date) {
-            $parts[] = '(' . $this->source_publication_date->format('Y') . ')';
+            $parts[] = '('.$this->source_publication_date->format('Y').')';
         }
 
         if ($this->source_report) {
-            $parts[] = '"' . $this->source_report . '"';
+            $parts[] = '"'.$this->source_report.'"';
         }
 
         return implode(' ', $parts);
@@ -138,7 +138,7 @@ class EnvironmentalFactor extends Model
      */
     public function isCurrentlyValid(): bool
     {
-        if (!$this->is_active || !$this->is_verified) {
+        if (! $this->is_active || ! $this->is_verified) {
             return false;
         }
 

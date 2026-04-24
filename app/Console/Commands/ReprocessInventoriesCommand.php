@@ -27,13 +27,15 @@ class ReprocessInventoriesCommand extends Command
 
         if ($count === 0) {
             $this->warn('No inventories found to reprocess.');
+
             return Command::SUCCESS;
         }
 
         $this->info("Found {$count} inventories to reprocess.");
 
-        if (!$this->confirm('Do you want to dispatch all these jobs to the queue?')) {
+        if (! $this->confirm('Do you want to dispatch all these jobs to the queue?')) {
             $this->info('Cancelled.');
+
             return Command::SUCCESS;
         }
 

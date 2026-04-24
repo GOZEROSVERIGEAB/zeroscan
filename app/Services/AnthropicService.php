@@ -10,11 +10,15 @@ use RuntimeException;
 class AnthropicService
 {
     protected const API_VERSION = '2023-06-01';
+
     protected const MODEL = 'claude-opus-4-7';
+
     protected const MAX_TOKENS = 4096;
+
     protected const TIMEOUT = 120;
 
     protected string $apiKey;
+
     protected string $baseUrl = 'https://api.anthropic.com/v1';
 
     /**
@@ -91,8 +95,9 @@ IMPORTANT:
     /**
      * Analyze an image for environmental impact assessment.
      *
-     * @param string $imagePath Absolute path to the image file
+     * @param  string  $imagePath  Absolute path to the image file
      * @return array<string, mixed> Structured environmental analysis data
+     *
      * @throws RuntimeException If the image cannot be read or API call fails
      */
     public function analyzeImage(string $imagePath): array
@@ -101,7 +106,7 @@ IMPORTANT:
             throw new RuntimeException('Anthropic API key is not configured');
         }
 
-        if (!file_exists($imagePath)) {
+        if (! file_exists($imagePath)) {
             throw new RuntimeException("Image file not found: {$imagePath}");
         }
 
@@ -119,9 +124,10 @@ IMPORTANT:
     /**
      * Call the Anthropic API with prompt caching enabled.
      *
-     * @param string $base64Image Base64 encoded image data
-     * @param string $mimeType Image MIME type
+     * @param  string  $base64Image  Base64 encoded image data
+     * @param  string  $mimeType  Image MIME type
      * @return array<string, mixed> Parsed analysis response
+     *
      * @throws RuntimeException If API call fails
      */
     protected function callAnthropicApi(string $base64Image, string $mimeType): array
@@ -167,7 +173,7 @@ IMPORTANT:
                     ],
                 ]);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 Log::error('AnthropicService: API request failed', [
                     'status' => $response->status(),
                     'body' => $response->body(),
@@ -199,7 +205,7 @@ IMPORTANT:
     /**
      * Parse the API response and extract structured data.
      *
-     * @param array<string, mixed> $responseData Raw API response
+     * @param  array<string, mixed>  $responseData  Raw API response
      * @return array<string, mixed> Parsed analysis data
      */
     protected function parseResponse(array $responseData): array
@@ -234,7 +240,7 @@ IMPORTANT:
     /**
      * Normalize the response to ensure all expected fields are present.
      *
-     * @param array<string, mixed> $parsed Parsed JSON response
+     * @param  array<string, mixed>  $parsed  Parsed JSON response
      * @return array<string, mixed> Normalized response
      */
     protected function normalizeResponse(array $parsed): array
@@ -286,7 +292,7 @@ IMPORTANT:
     /**
      * Determine the MIME type of an image file.
      *
-     * @param string $imagePath Path to the image file
+     * @param  string  $imagePath  Path to the image file
      * @return string MIME type
      */
     protected function getMimeType(string $imagePath): string

@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\EnvironmentalCategory;
-use App\Models\EnvironmentalFactor;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -16,8 +14,11 @@ class Inventory extends Model
     use SoftDeletes;
 
     public const STATUS_QUEUED = 999;
+
     public const STATUS_PROCESSING = 998;
+
     public const STATUS_COMPLETED = 900;
+
     public const STATUS_ERROR = 800;
 
     protected $fillable = [
@@ -189,10 +190,10 @@ class Inventory extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        if (!$this->image_path) {
+        if (! $this->image_path) {
             return null;
         }
 
-        return asset('storage/' . $this->image_path);
+        return asset('storage/'.$this->image_path);
     }
 }

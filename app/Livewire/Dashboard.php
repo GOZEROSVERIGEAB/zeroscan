@@ -64,7 +64,7 @@ class Dashboard extends Component
             for ($i = 12; $i >= 0; $i--) {
                 $weekStart = now()->subWeeks($i)->startOfWeek();
                 $weekEnd = now()->subWeeks($i)->endOfWeek();
-                $labels[] = 'V' . $weekStart->isoFormat('W');
+                $labels[] = 'V'.$weekStart->isoFormat('W');
 
                 $count = Inventory::whereIn('station_id', $stationIds)
                     ->where('status', Inventory::STATUS_COMPLETED)
@@ -123,6 +123,7 @@ class Dashboard extends Component
     protected function getPreviousPeriodStart(): Carbon
     {
         $days = (int) $this->period;
+
         return $this->getPeriodStart()->subDays($days);
     }
 
@@ -261,7 +262,7 @@ class Dashboard extends Component
         $user = Auth::user();
         $periodStart = $this->getPeriodStart();
 
-        if (!$user->customer_id) {
+        if (! $user->customer_id) {
             return [];
         }
 

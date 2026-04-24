@@ -164,9 +164,9 @@
                 Har du frågor om vår användning av cookies? Kontakta oss:
             </p>
             <p>
-                PreZero Sverige AB<br>
-                E-post: dataskydd@prezero.com<br>
-                Telefon: 0431-44 40 00
+                GoZero Sverige AB — Ett techföretag inom PreZero koncernen<br>
+                Blomstergatan 6, 591 70 Motala<br>
+                E-post: emilia.mastad@prezero.com eller andreas@gozero.se
             </p>
         </div>
     </div>

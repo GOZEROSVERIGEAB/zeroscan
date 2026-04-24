@@ -31,7 +31,7 @@ class CsrdExport implements WithMultipleSheets
     }
 }
 
-class CsrdMetricsSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize, WithStyles
+class CsrdMetricsSheet implements FromArray, ShouldAutoSize, WithHeadings, WithStyles, WithTitle
 {
     public function __construct(
         protected ReportDataService $service,
@@ -44,7 +44,7 @@ class CsrdMetricsSheet implements FromArray, WithHeadings, WithTitle, ShouldAuto
         $metrics = $this->service->getCsrdMetrics();
 
         return [
-            ['Rapportperiod', $this->startDate->format('Y-m-d') . ' - ' . $this->endDate->format('Y-m-d')],
+            ['Rapportperiod', $this->startDate->format('Y-m-d').' - '.$this->endDate->format('Y-m-d')],
             ['Standard', 'ESRS E5 - Resource Use & Circular Economy'],
             [''],
             ['ESRS Kod', 'Metrik', 'Värde', 'Enhet'],
@@ -76,7 +76,7 @@ class CsrdMetricsSheet implements FromArray, WithHeadings, WithTitle, ShouldAuto
     }
 }
 
-class CsrdCategoriesSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
+class CsrdCategoriesSheet implements FromArray, ShouldAutoSize, WithHeadings, WithTitle
 {
     public function __construct(protected ReportDataService $service) {}
 
@@ -105,7 +105,7 @@ class CsrdCategoriesSheet implements FromArray, WithHeadings, WithTitle, ShouldA
     }
 }
 
-class CsrdMaterialsSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
+class CsrdMaterialsSheet implements FromArray, ShouldAutoSize, WithHeadings, WithTitle
 {
     public function __construct(protected ReportDataService $service) {}
 
@@ -131,7 +131,7 @@ class CsrdMaterialsSheet implements FromArray, WithHeadings, WithTitle, ShouldAu
     }
 }
 
-class CsrdFacilitiesSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
+class CsrdFacilitiesSheet implements FromArray, ShouldAutoSize, WithHeadings, WithTitle
 {
     public function __construct(protected ReportDataService $service) {}
 

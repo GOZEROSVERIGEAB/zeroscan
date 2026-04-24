@@ -14,21 +14,32 @@ class CreateEdit extends Component
     use WithFileUploads;
 
     public ?Facility $facility = null;
+
     public bool $isEdit = false;
 
     public string $name = '';
+
     public string $description = '';
+
     public string $address = '';
+
     public string $city = '';
+
     public string $postal_code = '';
+
     public string $contact_name = '';
+
     public string $contact_email = '';
+
     public string $contact_phone = '';
+
     public bool $is_active = true;
 
     // Branding
     public $branding_logo = null;
+
     public ?string $branding_service_name = '';
+
     public ?string $currentLogoUrl = null;
 
     protected function rules(): array
@@ -55,7 +66,7 @@ class CreateEdit extends Component
 
         if ($facility && $facility->exists) {
             // Edit mode - require update permission
-            if (!$team || !$user->hasTeamPermission($team, 'update')) {
+            if (! $team || ! $user->hasTeamPermission($team, 'update')) {
                 abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
             }
 
@@ -74,7 +85,7 @@ class CreateEdit extends Component
             $this->currentLogoUrl = $facility->branding_logo_url;
         } else {
             // Create mode - require create permission
-            if (!$team || !$user->hasTeamPermission($team, 'create')) {
+            if (! $team || ! $user->hasTeamPermission($team, 'create')) {
                 abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
             }
         }
@@ -85,7 +96,7 @@ class CreateEdit extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team || !$user->hasTeamPermission($team, 'update')) {
+        if (! $team || ! $user->hasTeamPermission($team, 'update')) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;
@@ -107,7 +118,7 @@ class CreateEdit extends Component
 
         // Verify permission before saving
         $requiredPermission = $this->isEdit ? 'update' : 'create';
-        if (!$team || !$user->hasTeamPermission($team, $requiredPermission)) {
+        if (! $team || ! $user->hasTeamPermission($team, $requiredPermission)) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;

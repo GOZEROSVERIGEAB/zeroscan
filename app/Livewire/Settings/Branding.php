@@ -14,8 +14,11 @@ class Branding extends Component
     use WithFileUploads;
 
     public ?Customer $customer = null;
+
     public ?string $service_name = '';
+
     public $logo = null;
+
     public ?string $currentLogoUrl = null;
 
     public function mount(): void
@@ -31,7 +34,7 @@ class Branding extends Component
 
     public function getPreviewStationProperty(): ?Station
     {
-        if (!$this->customer) {
+        if (! $this->customer) {
             return null;
         }
 
@@ -53,8 +56,9 @@ class Branding extends Component
     {
         $this->validate();
 
-        if (!$this->customer) {
+        if (! $this->customer) {
             session()->flash('error', 'Ingen organisation hittades.');
+
             return;
         }
 
@@ -69,7 +73,7 @@ class Branding extends Component
 
             $path = $this->logo->store('logos', 'public');
             $data['logo_path'] = $path;
-            $this->currentLogoUrl = asset('storage/' . $path);
+            $this->currentLogoUrl = asset('storage/'.$path);
         }
 
         $this->customer->update($data);

@@ -8,16 +8,20 @@ use App\Models\ScanningSession;
 use App\Models\Station;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class ReportDataService
 {
     // Environmental impact conversion factors
     private const CO2_PER_TREE_YEARLY = 21; // kg CO2 absorbed per tree per year
+
     private const CO2_PER_CAR_KM = 0.12; // kg CO2 per km driven
+
     private const WATER_PER_SHOWER = 65; // liters per shower
+
     private const ENERGY_PER_PHONE_CHARGE = 0.012; // kWh per phone charge
+
     private const CO2_PER_FLIGHT_NYC = 1000; // kg CO2 Stockholm-NYC round trip
+
     private const WATER_PER_HOUSEHOLD_DAY = 150; // liters per day
 
     public function __construct(

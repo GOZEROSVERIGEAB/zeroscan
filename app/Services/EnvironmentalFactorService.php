@@ -63,7 +63,7 @@ class EnvironmentalFactorService
 
         // Second: keyword match - prioritize categories WITH factors
         $words = preg_split('/[\s,\/\-]+/', $searchTerm);
-        $words = array_filter($words, fn($w) => strlen($w) >= 2);
+        $words = array_filter($words, fn ($w) => strlen($w) >= 2);
 
         $bestMatch = null;
         $bestScore = 0;
@@ -241,7 +241,7 @@ class EnvironmentalFactorService
             $aiResponse['name'] ?? null
         );
 
-        if (!$category) {
+        if (! $category) {
             Log::warning('EnvironmentalFactorService: No category match found', [
                 'ai_category' => $aiResponse['category'] ?? null,
                 'ai_subcategory' => $aiResponse['subcategory'] ?? null,
@@ -253,7 +253,7 @@ class EnvironmentalFactorService
 
         $factor = $this->getFactorForCategory($category);
 
-        if (!$factor) {
+        if (! $factor) {
             Log::warning('EnvironmentalFactorService: No verified factor found for category', [
                 'category_id' => $category->id,
                 'category_slug' => $category->slug,

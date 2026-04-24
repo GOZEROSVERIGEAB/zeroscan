@@ -42,7 +42,7 @@ class Facility extends Model
     public function getBrandingLogoUrlAttribute(): ?string
     {
         if ($this->branding_logo_path) {
-            return asset('storage/' . $this->branding_logo_path);
+            return asset('storage/'.$this->branding_logo_path);
         }
 
         return null;

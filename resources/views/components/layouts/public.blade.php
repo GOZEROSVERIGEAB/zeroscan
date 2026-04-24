@@ -110,7 +110,7 @@
                         @if($branding['has_custom'] && $branding['service_name'])
                             {{ $branding['service_name'] }} - Mät miljövärdet av återanvändning.
                         @else
-                            Scanit är en tjänst från PreZero Sverige för att mäta och kommunicera miljövärdet av återanvändning.
+                            Scanit är en tjänst från GoZero för att mäta och kommunicera miljövärdet av återanvändning.
                         @endif
                     </p>
                 </div>

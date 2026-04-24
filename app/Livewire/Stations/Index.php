@@ -13,8 +13,11 @@ class Index extends Component
     use WithPagination;
 
     public string $search = '';
+
     public ?string $facilityFilter = null;
+
     public bool $showDeleteModal = false;
+
     public ?Station $stationToDelete = null;
 
     protected $queryString = ['facilityFilter' => ['as' => 'facility']];
@@ -36,7 +39,7 @@ class Index extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team) {
+        if (! $team) {
             return false;
         }
 
@@ -48,7 +51,7 @@ class Index extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team) {
+        if (! $team) {
             return false;
         }
 
@@ -60,7 +63,7 @@ class Index extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team) {
+        if (! $team) {
             return false;
         }
 
@@ -69,7 +72,7 @@ class Index extends Component
 
     public function confirmDelete(int $stationId): void
     {
-        if (!$this->canDelete) {
+        if (! $this->canDelete) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;
@@ -81,7 +84,7 @@ class Index extends Component
 
     public function deleteStation(): void
     {
-        if (!$this->canDelete) {
+        if (! $this->canDelete) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
             $this->showDeleteModal = false;
             $this->stationToDelete = null;
@@ -106,7 +109,7 @@ class Index extends Component
 
     public function restoreStation(int $stationId): void
     {
-        if (!$this->canDelete) {
+        if (! $this->canDelete) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;

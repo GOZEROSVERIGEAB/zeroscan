@@ -51,11 +51,11 @@ class EnvironmentalSource extends Model
         $parts = [$this->organization];
 
         if ($this->publication_date) {
-            $parts[] = '(' . $this->publication_date->format('Y') . ')';
+            $parts[] = '('.$this->publication_date->format('Y').')';
         }
 
         if ($this->report_title) {
-            $parts[] = '"' . $this->report_title . '"';
+            $parts[] = '"'.$this->report_title.'"';
         }
 
         return implode(' ', $parts);

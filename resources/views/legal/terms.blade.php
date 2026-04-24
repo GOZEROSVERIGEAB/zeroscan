@@ -5,7 +5,7 @@
 
         <div class="prose max-w-none">
             <p>
-                Dessa användarvillkor ("Villkoren") reglerar din användning av tjänsten Scanit ("Tjänsten") som tillhandahålls av PreZero Sverige AB ("PreZero", "vi", "oss").
+                Dessa användarvillkor ("Villkoren") reglerar din användning av tjänsten Scanit ("Tjänsten") som tillhandahålls av GoZero Sverige AB ("GoZero", "vi", "oss"), ett techföretag inom PreZero koncernen.
             </p>
             <p>
                 Genom att använda Tjänsten godkänner du dessa Villkor. Om du inte godkänner Villkoren ska du inte använda Tjänsten.
@@ -60,7 +60,7 @@
 
             <h2>6. Immateriella rättigheter</h2>
             <p>
-                Tjänsten, inklusive design, logotyper, texter och programkod, är skyddad av upphovsrätt och andra immateriella rättigheter som tillhör PreZero eller våra licensgivare. Du får inte:
+                Tjänsten, inklusive design, logotyper, texter och programkod, är skyddad av upphovsrätt och andra immateriella rättigheter som tillhör GoZero eller våra licensgivare. Du får inte:
             </p>
             <ul>
                 <li>Kopiera, modifiera eller distribuera Tjänstens innehåll</li>
@@ -70,7 +70,7 @@
 
             <h2>7. Ansvarsbegränsning</h2>
             <p>
-                Tjänsten tillhandahålls "i befintligt skick" utan några garantier. PreZero ansvarar inte för:
+                Tjänsten tillhandahålls "i befintligt skick" utan några garantier. GoZero ansvarar inte för:
             </p>
             <ul>
                 <li>Avbrott eller fel i Tjänsten</li>
@@ -105,9 +105,9 @@
                 Har du frågor om dessa användarvillkor? Kontakta oss:
             </p>
             <p>
-                PreZero Sverige AB<br>
-                E-post: info@prezero.com<br>
-                Telefon: 0431-44 40 00
+                GoZero Sverige AB — Ett techföretag inom PreZero koncernen<br>
+                Blomstergatan 6, 591 70 Motala<br>
+                E-post: emilia.mastad@prezero.com eller andreas@gozero.se
             </p>
         </div>
     </div>

@@ -25,6 +25,7 @@ class CsrdReport extends Component
     public string $comparisonType = 'yoy';
 
     public ?string $customStartDate = null;
+
     public ?string $customEndDate = null;
 
     public function mount(): void

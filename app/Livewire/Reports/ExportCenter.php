@@ -3,7 +3,6 @@
 namespace App\Livewire\Reports;
 
 use App\Services\Reports\ReportDataService;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -22,6 +21,7 @@ class ExportCenter extends Component
     public ?int $facilityId = null;
 
     public string $exportFormat = 'pdf';
+
     public string $exportType = 'executive';
 
     public array $exportTypes = [

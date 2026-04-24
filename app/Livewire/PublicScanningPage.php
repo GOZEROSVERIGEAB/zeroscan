@@ -15,17 +15,23 @@ class PublicScanningPage extends Component
     use WithFileUploads;
 
     public Station $station;
+
     public array $branding;
 
     public int $step = 1;
+
     public int $maxImages;
 
     public array $photos = [];
+
     public array $uploadedPhotos = [];
 
     public ?string $visitorName = null;
+
     public ?string $visitorEmail = null;
+
     public bool $wantsReport = false;
+
     public bool $gdprConsent = false;
 
     public ?ScanningSession $session = null;
@@ -87,6 +93,7 @@ class PublicScanningPage extends Component
     {
         if (count($this->uploadedPhotos) === 0) {
             $this->addError('photos', 'Du måste ladda upp minst en bild');
+
             return;
         }
 
@@ -95,7 +102,7 @@ class PublicScanningPage extends Component
 
     public function toggleWantsReport(): void
     {
-        $this->wantsReport = !$this->wantsReport;
+        $this->wantsReport = ! $this->wantsReport;
     }
 
     public function submitScan(): void

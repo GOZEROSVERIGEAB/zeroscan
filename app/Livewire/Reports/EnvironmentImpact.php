@@ -25,6 +25,7 @@ class EnvironmentImpact extends Component
     public ?int $stationId = null;
 
     public ?string $customStartDate = null;
+
     public ?string $customEndDate = null;
 
     public function mount(): void

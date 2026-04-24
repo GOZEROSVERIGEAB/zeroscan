@@ -18,7 +18,7 @@ class UpdateInventoryEnvironmentalDataCommand extends Command
     {
         $query = Inventory::where('status', Inventory::STATUS_COMPLETED);
 
-        if (!$this->option('all')) {
+        if (! $this->option('all')) {
             $query->where(function ($q) {
                 $q->whereNull('environmental_data_source')
                     ->orWhere('environmental_data_source', '!=', 'verified_database');
@@ -116,8 +116,8 @@ class UpdateInventoryEnvironmentalDataCommand extends Command
         $bar->finish();
         $this->newLine(2);
 
-        if (!$this->option('dry-run')) {
-            $this->info("Results:");
+        if (! $this->option('dry-run')) {
+            $this->info('Results:');
             $this->line("  - Updated with verified data: {$updated}");
             $this->line("  - No matching category found: {$noData}");
             if ($errors > 0) {

@@ -8,6 +8,7 @@ use Livewire\Component;
 class QrCode extends Component
 {
     public Station $station;
+
     public string $size = 'medium';
 
     public function mount(Station $station): void

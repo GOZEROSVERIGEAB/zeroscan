@@ -17,7 +17,7 @@ class PurgeArchivedItemsCommand extends Command
         $dryRun = $this->option('dry-run');
         $cutoffDate = now()->subDays(7);
 
-        $this->info('Purging archived items older than ' . $cutoffDate->toDateTimeString());
+        $this->info('Purging archived items older than '.$cutoffDate->toDateTimeString());
 
         // Find stations to purge
         $stationsToDelete = Station::onlyTrashed()

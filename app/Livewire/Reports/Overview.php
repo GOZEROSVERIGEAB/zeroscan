@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Reports;
 
-use App\Models\Station;
 use App\Services\Reports\ReportDataService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +25,7 @@ class Overview extends Component
     public ?int $stationId = null;
 
     public ?string $customStartDate = null;
+
     public ?string $customEndDate = null;
 
     public function mount(): void

@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Inventory;
 use App\Models\ScanningSession;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -26,7 +27,7 @@ class EnvironmentReportNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $inventories = $this->session->inventories()
-            ->where('status', \App\Models\Inventory::STATUS_COMPLETED)
+            ->where('status', Inventory::STATUS_COMPLETED)
             ->get();
 
         $totalCo2 = $inventories->sum('co2_savings') ?? 0;
@@ -43,7 +44,7 @@ class EnvironmentReportNotification extends Notification
         $station = $this->session->station;
         $stationName = $station?->name ?? 'ScanIT';
         $logoUrl = $station?->logo_path
-            ? asset('storage/' . $station->logo_path)
+            ? asset('storage/'.$station->logo_path)
             : null;
 
         return (new MailMessage)

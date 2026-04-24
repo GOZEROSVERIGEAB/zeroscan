@@ -12,7 +12,9 @@ class Index extends Component
     use WithPagination;
 
     public string $search = '';
+
     public bool $showDeleteModal = false;
+
     public ?Facility $facilityToDelete = null;
 
     public function updatingSearch(): void
@@ -25,7 +27,7 @@ class Index extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team) {
+        if (! $team) {
             return false;
         }
 
@@ -37,7 +39,7 @@ class Index extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team) {
+        if (! $team) {
             return false;
         }
 
@@ -49,7 +51,7 @@ class Index extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team) {
+        if (! $team) {
             return false;
         }
 
@@ -58,7 +60,7 @@ class Index extends Component
 
     public function confirmDelete(int $facilityId): void
     {
-        if (!$this->canDelete) {
+        if (! $this->canDelete) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;
@@ -70,7 +72,7 @@ class Index extends Component
 
     public function deleteFacility(): void
     {
-        if (!$this->canDelete) {
+        if (! $this->canDelete) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
             $this->showDeleteModal = false;
             $this->facilityToDelete = null;
@@ -98,7 +100,7 @@ class Index extends Component
 
     public function restoreFacility(int $facilityId): void
     {
-        if (!$this->canDelete) {
+        if (! $this->canDelete) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;

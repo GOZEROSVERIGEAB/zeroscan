@@ -212,9 +212,9 @@
     <footer class="py-4 px-4 text-center">
         <p class="text-xs text-gray-400">
             @if(!($branding['has_custom'] ?? false))
-                En tjänst från PreZero Sverige
+                En tjänst från GoZero
             @else
-                Powered by <span class="font-medium">PreZero Sverige</span>
+                Powered by <span class="font-medium">GoZero</span>
             @endif
         </p>
     </footer>

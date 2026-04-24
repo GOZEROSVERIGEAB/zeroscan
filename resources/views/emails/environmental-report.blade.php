@@ -805,7 +805,7 @@
                             </p>
 
                             <p class="footer-copyright">
-                                &copy; {{ date('Y') }} PreZero Scanit. Alla rättigheter förbehållna.
+                                &copy; {{ date('Y') }} Scanit — GoZero Sverige AB. Alla rättigheter förbehållna.
                             </p>
                         </div>
                     </div>

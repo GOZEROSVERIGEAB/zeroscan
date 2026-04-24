@@ -5,18 +5,18 @@
 
         <div class="prose max-w-none">
             <p>
-                PreZero Sverige AB ("vi", "oss", "vår") värnar om din personliga integritet. Denna integritetspolicy förklarar hur vi samlar in, använder och skyddar dina personuppgifter när du använder tjänsten Scanit.
+                GoZero Sverige AB ("vi", "oss", "vår"), ett techföretag inom PreZero koncernen, värnar om din personliga integritet. Denna integritetspolicy förklarar hur vi samlar in, använder och skyddar dina personuppgifter när du använder tjänsten Scanit.
             </p>
 
             <h2>1. Personuppgiftsansvarig</h2>
             <p>
-                PreZero Sverige AB är personuppgiftsansvarig för behandlingen av dina personuppgifter i samband med Scanit-tjänsten.
+                GoZero Sverige AB är personuppgiftsansvarig för behandlingen av dina personuppgifter i samband med Scanit-tjänsten.
             </p>
             <p>
                 <strong>Kontaktuppgifter:</strong><br>
-                PreZero Sverige AB<br>
-                E-post: dataskydd@prezero.com<br>
-                Telefon: 0431-44 40 00
+                GoZero Sverige AB — Ett techföretag inom PreZero koncernen<br>
+                Blomstergatan 6, 591 70 Motala<br>
+                E-post: emilia.mastad@prezero.com eller andreas@gozero.se
             </p>
 
             <h2>2. Vilka personuppgifter samlar vi in?</h2>
@@ -67,7 +67,7 @@
 
             <h2>7. Datalagring</h2>
             <p>
-                Alla personuppgifter lagras på servrar inom Sverige/EU. Vi använder kryptering och säkerhetsåtgärder för att skydda dina uppgifter.
+                Alla personuppgifter lagras på servrar i Norden/EU. Vi använder kryptering och säkerhetsåtgärder för att skydda dina uppgifter.
             </p>
 
             <h2>8. Dina rättigheter</h2>
@@ -81,7 +81,7 @@
                 <li><strong>Rätt att återkalla samtycke</strong> – när som helst återkalla ditt samtycke</li>
             </ul>
             <p>
-                För att utöva dina rättigheter, kontakta oss på dataskydd@prezero.com.
+                För att utöva dina rättigheter, kontakta oss på emilia.mastad@prezero.com eller andreas@gozero.se.
             </p>
 
             <h2>9. Klagomål</h2>
@@ -105,8 +105,9 @@
                 Har du frågor om denna integritetspolicy eller vår behandling av personuppgifter? Kontakta oss:
             </p>
             <p>
-                E-post: dataskydd@prezero.com<br>
-                Telefon: 0431-44 40 00
+                GoZero Sverige AB — Ett techföretag inom PreZero koncernen<br>
+                Blomstergatan 6, 591 70 Motala<br>
+                E-post: emilia.mastad@prezero.com eller andreas@gozero.se
             </p>
         </div>
     </div>

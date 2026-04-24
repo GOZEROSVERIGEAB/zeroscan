@@ -64,7 +64,7 @@ class ProcessScanningSession implements ShouldQueue
             $this->updateFacilityStatistics($totalItems, $totalCo2Savings);
             $this->markSessionAsCompleted($totalItems, $totalCo2Savings, $hasErrors);
 
-            if ($this->session->email && !$this->session->report_sent) {
+            if ($this->session->email && ! $this->session->report_sent) {
                 SendEnvironmentalReport::dispatch($this->session);
             }
 
@@ -93,7 +93,7 @@ class ProcessScanningSession implements ShouldQueue
             $updateData['ai_processing_started_at'] = now();
         }
 
-        if (!empty($updateData)) {
+        if (! empty($updateData)) {
             $this->session->update($updateData);
         }
     }
@@ -137,7 +137,7 @@ class ProcessScanningSession implements ShouldQueue
             $updateData['error_message'] = $errorMessage;
         }
 
-        if (!empty($updateData)) {
+        if (! empty($updateData)) {
             $this->session->update($updateData);
         }
     }
@@ -148,7 +148,7 @@ class ProcessScanningSession implements ShouldQueue
 
         $imagePath = $inventory->image_path;
 
-        if (!Storage::disk('public')->exists($imagePath)) {
+        if (! Storage::disk('public')->exists($imagePath)) {
             throw new \RuntimeException("Image not found: {$imagePath}");
         }
 
@@ -168,7 +168,7 @@ class ProcessScanningSession implements ShouldQueue
     /**
      * Update the inventory record with AI analysis data.
      *
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     protected function updateInventoryWithAIData(Inventory $inventory, AIResponse $response, array $data): void
     {
@@ -205,7 +205,7 @@ class ProcessScanningSession implements ShouldQueue
     {
         $station = $this->session->station;
 
-        if (!$station) {
+        if (! $station) {
             return;
         }
 
@@ -216,7 +216,7 @@ class ProcessScanningSession implements ShouldQueue
     {
         $station = $this->session->station;
 
-        if (!$station || !$station->facility) {
+        if (! $station || ! $station->facility) {
             return;
         }
 

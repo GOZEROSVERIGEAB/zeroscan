@@ -30,7 +30,7 @@ class EnvironmentalReportExport implements WithMultipleSheets
     }
 }
 
-class SummarySheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize, WithStyles
+class SummarySheet implements FromArray, ShouldAutoSize, WithHeadings, WithStyles, WithTitle
 {
     public function __construct(
         protected ReportDataService $service,
@@ -44,7 +44,7 @@ class SummarySheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
         $impact = $this->service->getEnvironmentalImpact();
 
         return [
-            ['Period', $this->startDate->format('Y-m-d') . ' - ' . $this->endDate->format('Y-m-d')],
+            ['Period', $this->startDate->format('Y-m-d').' - '.$this->endDate->format('Y-m-d')],
             [''],
             ['Nyckeltal', ''],
             ['Antal föremål', $kpis['items'] ?? 0],
@@ -86,7 +86,7 @@ class SummarySheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
     }
 }
 
-class CategoriesSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
+class CategoriesSheet implements FromArray, ShouldAutoSize, WithHeadings, WithTitle
 {
     public function __construct(protected ReportDataService $service) {}
 
@@ -97,7 +97,7 @@ class CategoriesSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoS
         return collect($categories)->map(fn ($cat) => [
             $cat['name'],
             $cat['count'],
-            number_format($cat['percentage'], 1) . '%',
+            number_format($cat['percentage'], 1).'%',
             number_format($cat['co2_savings'], 2),
             number_format($cat['value'], 0),
         ])->toArray();
@@ -114,7 +114,7 @@ class CategoriesSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoS
     }
 }
 
-class TimeSeriesSheet implements FromArray, WithHeadings, WithTitle, ShouldAutoSize
+class TimeSeriesSheet implements FromArray, ShouldAutoSize, WithHeadings, WithTitle
 {
     public function __construct(protected ReportDataService $service) {}
 

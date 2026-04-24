@@ -14,23 +14,36 @@ class CreateEdit extends Component
     use WithFileUploads;
 
     public ?Station $station = null;
+
     public bool $isEdit = false;
 
     public ?string $facility_id = null;
+
     public string $name = '';
+
     public string $description = '';
+
     public string $location_description = '';
+
     public string $info_page_text = '';
+
     public string $thank_you_text = '';
+
     public bool $is_active = true;
+
     public bool $require_email = false;
+
     public int $max_images = 5;
+
     public string $primary_color = '#97d700';
 
     // Branding override
     public bool $use_custom_branding = false;
+
     public $branding_logo = null;
+
     public ?string $branding_service_name = '';
+
     public ?string $currentLogoUrl = null;
 
     protected function rules(): array
@@ -59,7 +72,7 @@ class CreateEdit extends Component
 
         if ($station && $station->exists) {
             // Edit mode - require update permission
-            if (!$team || !$user->hasTeamPermission($team, 'update')) {
+            if (! $team || ! $user->hasTeamPermission($team, 'update')) {
                 abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
             }
 
@@ -77,10 +90,10 @@ class CreateEdit extends Component
             $this->primary_color = $station->primary_color ?? '#97d700';
             $this->use_custom_branding = $station->use_custom_branding ?? false;
             $this->branding_service_name = $station->branding_service_name ?? '';
-            $this->currentLogoUrl = $station->branding_logo_path ? asset('storage/' . $station->branding_logo_path) : null;
+            $this->currentLogoUrl = $station->branding_logo_path ? asset('storage/'.$station->branding_logo_path) : null;
         } else {
             // Create mode - require create permission
-            if (!$team || !$user->hasTeamPermission($team, 'create')) {
+            if (! $team || ! $user->hasTeamPermission($team, 'create')) {
                 abort(403, __('Du har inte behörighet att utföra denna åtgärd.'));
             }
         }
@@ -91,7 +104,7 @@ class CreateEdit extends Component
         $user = Auth::user();
         $team = $user->currentTeam;
 
-        if (!$team || !$user->hasTeamPermission($team, 'update')) {
+        if (! $team || ! $user->hasTeamPermission($team, 'update')) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;
@@ -106,9 +119,10 @@ class CreateEdit extends Component
 
     public function getSelectedFacilityProperty(): ?Facility
     {
-        if (!$this->facility_id) {
+        if (! $this->facility_id) {
             return null;
         }
+
         return Facility::find($this->facility_id);
     }
 
@@ -121,7 +135,7 @@ class CreateEdit extends Component
 
         // Verify permission before saving
         $requiredPermission = $this->isEdit ? 'update' : 'create';
-        if (!$team || !$user->hasTeamPermission($team, $requiredPermission)) {
+        if (! $team || ! $user->hasTeamPermission($team, $requiredPermission)) {
             session()->flash('error', __('Du har inte behörighet att utföra denna åtgärd.'));
 
             return;

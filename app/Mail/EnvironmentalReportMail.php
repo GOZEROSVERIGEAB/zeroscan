@@ -16,19 +16,33 @@ class EnvironmentalReportMail extends Mailable implements ShouldQueue
     use SerializesModels;
 
     public ScanningSession $session;
+
     public array $branding;
+
     public float $totalCo2;
+
     public float $totalWater;
+
     public float $totalEnergy;
+
     public float $totalValue;
+
     public int $itemCount;
+
     public float $treesEquivalent;
+
     public float $carKmEquivalent;
+
     public float $showerEquivalent;
+
     public float $phoneChargesEquivalent;
+
     public string $visitorName;
+
     public string $stationName;
+
     public ?string $logoUrl;
+
     public array $aiSources;
 
     public function __construct(ScanningSession $session)
@@ -92,7 +106,7 @@ class EnvironmentalReportMail extends Mailable implements ShouldQueue
 
     protected function extractNameFromEmail(?string $email): string
     {
-        if (!$email) {
+        if (! $email) {
             return '';
         }
 
