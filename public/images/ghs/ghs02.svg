@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="3" y="3" width="94" height="94" transform="rotate(45 50 50)" fill="#fff" stroke="#dc2626" stroke-width="4"/>
+  <g fill="#000">
+    <!-- Flame symbol -->
+    <path d="M50 20 C50 20 35 40 35 55 C35 65 42 75 50 75 C50 75 45 65 47 55 C48 48 55 42 55 42 C55 42 52 52 55 58 C58 65 65 65 65 55 C65 40 50 20 50 20 Z"/>
+  </g>
+</svg>

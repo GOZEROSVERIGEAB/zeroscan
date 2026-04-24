@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="3" y="3" width="94" height="94" transform="rotate(45 50 50)" fill="#fff" stroke="#dc2626" stroke-width="4"/>
+  <g fill="#000">
+    <!-- Flame over circle (oxidizer) -->
+    <circle cx="50" cy="62" r="14" fill="none" stroke="#000" stroke-width="4"/>
+    <path d="M50 25 C50 25 38 42 38 52 C38 58 43 63 50 63 C50 63 46 56 48 50 C49 45 54 42 54 42 C54 42 52 48 54 52 C56 57 62 57 62 52 C62 42 50 25 50 25 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="3" y="3" width="94" height="94" transform="rotate(45 50 50)" fill="#fff" stroke="#dc2626" stroke-width="4"/>
+  <g fill="#000">
+    <!-- Health hazard (silhouette with star/damage) -->
+    <circle cx="50" cy="30" r="10"/>
+    <path d="M35 45 L65 45 L62 75 L38 75 Z"/>
+    <!-- Six-pointed star indicating internal damage -->
+    <polygon points="50,50 53,56 60,56 55,60 57,67 50,63 43,67 45,60 40,56 47,56" fill="#fff"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="3" y="3" width="94" height="94" transform="rotate(45 50 50)" fill="#fff" stroke="#dc2626" stroke-width="4"/>
+  <g fill="#000">
+    <!-- Corrosion symbol - liquid dropping on hand and surface -->
+    <!-- Test tube dropping liquid -->
+    <path d="M30 22 L38 22 L38 35 C38 35 42 40 42 42 L26 42 C26 40 30 35 30 35 Z"/>
+    <ellipse cx="34" cy="52" rx="8" ry="3"/>
+    <ellipse cx="34" cy="58" rx="10" ry="4"/>
+    <!-- Hand being corroded -->
+    <path d="M55 25 C55 25 58 25 60 28 L68 28 C72 28 75 32 75 36 L75 45 C75 48 72 50 68 50 L62 50 L62 60 C62 63 58 66 55 66 L50 66 C48 66 46 64 46 62 L46 35 C46 30 50 25 55 25 Z"/>
+    <ellipse cx="58" cy="72" rx="12" ry="4"/>
+  </g>
+</svg>
