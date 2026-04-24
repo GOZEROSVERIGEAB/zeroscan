@@ -138,6 +138,11 @@ class OtpController extends Controller
         Auth::login($user);
         $user->update(['otp_verified_at' => now()]);
 
+        // If user has no current team, set their first available team as current
+        if (! $user->current_team_id && $user->allTeams()->count() > 0) {
+            $user->switchTeam($user->allTeams()->first());
+        }
+
         return redirect()->intended('/dashboard');
     }
 
