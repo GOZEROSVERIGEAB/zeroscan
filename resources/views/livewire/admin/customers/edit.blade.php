@@ -56,6 +56,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <p class="text-red-700">{{ session('error') }}</p>
+        </div>
+    @endif
+
     <!-- Tabs -->
     <div class="mb-6 border-b border-gray-200">
         <nav class="flex gap-8">
@@ -79,6 +85,14 @@
                     {{ $activeTab === 'usage' ? 'border-[#005151] text-[#005151]' : 'border-transparent text-gray-500 hover:text-gray-700' }}"
             >
                 {{ __('admin.tabs.usage') }}
+            </button>
+            <button
+                wire:click="setTab('users')"
+                class="pb-4 px-1 text-sm font-medium border-b-2 transition
+                    {{ $activeTab === 'users' ? 'border-[#005151] text-[#005151]' : 'border-transparent text-gray-500 hover:text-gray-700' }}"
+            >
+                {{ __('admin.tabs.users') }}
+                <span class="ml-2 px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-full">{{ $customer->users_count ?? $customer->users->count() }}</span>
             </button>
         </nav>
     </div>
@@ -404,8 +418,189 @@
             </div>
         @endif
 
+        <!-- Users Tab -->
+        @if($activeTab === 'users')
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Add New User Form -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('admin.users.add_user') }}</h3>
+                    <p class="text-sm text-gray-500 mb-6">{{ __('admin.users.add_user_desc') }}</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="newUserName" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ __('admin.users.name') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="newUserName"
+                                wire:model="newUserName"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#97d700] focus:ring-2 focus:ring-[#97d700]/20 transition"
+                                placeholder="{{ __('admin.users.name_placeholder') }}"
+                            />
+                            @error('newUserName') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="newUserEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ __('admin.users.email') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                id="newUserEmail"
+                                wire:model="newUserEmail"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#97d700] focus:ring-2 focus:ring-[#97d700]/20 transition"
+                                placeholder="{{ __('admin.users.email_placeholder') }}"
+                            />
+                            @error('newUserEmail') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="newUserRole" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ __('admin.users.role') }}
+                            </label>
+                            <select
+                                id="newUserRole"
+                                wire:model="newUserRole"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#97d700] focus:ring-2 focus:ring-[#97d700]/20 transition"
+                            >
+                                <option value="admin">{{ __('admin.users.role_admin') }}</option>
+                                <option value="editor">{{ __('admin.users.role_editor') }}</option>
+                                <option value="user">{{ __('admin.users.role_user') }}</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-2">
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                <input
+                                    type="checkbox"
+                                    wire:model="sendWelcomeEmail"
+                                    class="w-5 h-5 rounded border-gray-300 text-[#005151] focus:ring-[#005151]"
+                                />
+                                <div>
+                                    <span class="font-medium text-gray-900 text-sm">{{ __('admin.users.send_welcome_email') }}</span>
+                                    <p class="text-xs text-gray-500">{{ __('admin.users.send_welcome_email_desc') }}</p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="flex gap-3 pt-4">
+                            <button
+                                type="button"
+                                wire:click="addUser"
+                                class="flex-1 px-4 py-3 bg-[#97d700] hover:bg-[#85c200] text-[#005151] font-semibold rounded-xl transition"
+                            >
+                                {{ __('admin.users.add_button') }}
+                            </button>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <button
+                                type="button"
+                                wire:click="sendTestEmail"
+                                class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition flex items-center justify-center gap-2"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                {{ __('admin.users.test_email') }}
+                            </button>
+                            <p class="mt-2 text-xs text-gray-500 text-center">{{ __('admin.users.test_email_hint') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User List -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">{{ __('admin.users.existing_users') }}</h3>
+
+                    @if($customer->users->isEmpty())
+                        <div class="text-center py-12">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                            <p class="text-gray-500">{{ __('admin.users.no_users') }}</p>
+                        </div>
+                    @else
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="text-left text-sm text-gray-500 border-b border-gray-100">
+                                        <th class="pb-3 font-medium">{{ __('admin.users.name') }}</th>
+                                        <th class="pb-3 font-medium">{{ __('admin.users.email') }}</th>
+                                        <th class="pb-3 font-medium">{{ __('admin.users.role') }}</th>
+                                        <th class="pb-3 font-medium text-right">{{ __('admin.users.actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    @foreach($customer->users as $user)
+                                        <tr>
+                                            <td class="py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-9 h-9 rounded-full bg-[#005151] flex items-center justify-center text-white font-semibold text-sm">
+                                                        {{ strtoupper(substr($user->name, 0, 2)) }}
+                                                    </div>
+                                                    <span class="font-medium text-gray-900">{{ $user->name }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 text-gray-600">{{ $user->email }}</td>
+                                            <td class="py-4">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                    {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-800' : '' }}
+                                                    {{ $user->role === 'editor' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                    {{ $user->role === 'user' ? 'bg-gray-100 text-gray-800' : '' }}
+                                                    {{ $user->role === 'super_admin' ? 'bg-red-100 text-red-800' : '' }}
+                                                ">
+                                                    @if($user->role === 'admin')
+                                                        {{ __('admin.users.role_admin') }}
+                                                    @elseif($user->role === 'editor')
+                                                        {{ __('admin.users.role_editor') }}
+                                                    @elseif($user->role === 'super_admin')
+                                                        {{ __('admin.users.role_super_admin') }}
+                                                    @else
+                                                        {{ __('admin.users.role_user') }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td class="py-4 text-right">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <button
+                                                        type="button"
+                                                        wire:click="resendWelcomeEmail({{ $user->id }})"
+                                                        class="p-2 text-gray-400 hover:text-[#005151] hover:bg-gray-100 rounded-lg transition"
+                                                        title="{{ __('admin.users.resend_welcome') }}"
+                                                    >
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                                        </svg>
+                                                    </button>
+                                                    @if($user->role !== 'super_admin')
+                                                        <button
+                                                            type="button"
+                                                            wire:click="removeUser({{ $user->id }})"
+                                                            wire:confirm="{{ __('admin.users.confirm_remove') }}"
+                                                            class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                                                            title="{{ __('admin.users.remove') }}"
+                                                        >
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                            </svg>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
         <!-- Save Button -->
-        @if($activeTab !== 'usage')
+        @if($activeTab !== 'usage' && $activeTab !== 'users')
             <div class="mt-6 flex justify-end">
                 <button
                     type="submit"

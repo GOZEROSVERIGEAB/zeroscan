@@ -3,6 +3,10 @@
 namespace App\Livewire\Admin\Customers;
 
 use App\Models\Customer;
+use App\Models\Team;
+use App\Models\User;
+use App\Notifications\WelcomeUserNotification;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Edit extends Component
@@ -44,6 +48,15 @@ class Edit extends Component
     public ?int $max_stations = null;
 
     public ?int $max_scans_per_month = null;
+
+    // New User Form
+    public string $newUserName = '';
+
+    public string $newUserEmail = '';
+
+    public string $newUserRole = 'user';
+
+    public bool $sendWelcomeEmail = true;
 
     protected function rules(): array
     {
@@ -160,12 +173,118 @@ class Edit extends Component
         session()->flash('success', __('admin.customers.suspended_success'));
     }
 
+    public function addUser(): void
+    {
+        $this->validate([
+            'newUserName' => 'required|string|max:255',
+            'newUserEmail' => 'required|email|unique:users,email',
+            'newUserRole' => 'required|in:admin,editor,user',
+        ], [
+            'newUserEmail.unique' => __('admin.users.email_exists'),
+        ]);
+
+        $user = User::create([
+            'name' => $this->newUserName,
+            'email' => $this->newUserEmail,
+            'customer_id' => $this->customer->id,
+            'role' => $this->newUserRole,
+            'password' => bcrypt(Str::random(32)),
+            'otp_enabled' => true,
+        ]);
+
+        $team = $this->getOrCreateCustomerTeam();
+        $team->users()->attach($user, ['role' => $this->newUserRole]);
+        $user->update(['current_team_id' => $team->id]);
+
+        if ($this->sendWelcomeEmail) {
+            $user->notify(new WelcomeUserNotification($this->customer));
+        }
+
+        $this->reset(['newUserName', 'newUserEmail', 'newUserRole']);
+        $this->sendWelcomeEmail = true;
+
+        session()->flash('success', __('admin.users.created_success'));
+    }
+
+    public function sendTestEmail(): void
+    {
+        auth()->user()->notify(new WelcomeUserNotification($this->customer));
+
+        session()->flash('success', __('admin.users.test_email_sent'));
+    }
+
+    public function removeUser(int $userId): void
+    {
+        $user = User::find($userId);
+
+        if (! $user || $user->customer_id !== $this->customer->id) {
+            return;
+        }
+
+        if ($user->isSuperAdmin()) {
+            session()->flash('error', __('admin.users.cannot_remove_super_admin'));
+
+            return;
+        }
+
+        $user->teams()->detach();
+
+        $user->delete();
+
+        session()->flash('success', __('admin.users.removed_success'));
+    }
+
+    public function resendWelcomeEmail(int $userId): void
+    {
+        $user = User::find($userId);
+
+        if (! $user || $user->customer_id !== $this->customer->id) {
+            return;
+        }
+
+        $user->notify(new WelcomeUserNotification($this->customer));
+
+        session()->flash('success', __('admin.users.welcome_email_resent'));
+    }
+
+    private function getOrCreateCustomerTeam(): Team
+    {
+        $team = Team::where('name', $this->customer->name)
+            ->whereHas('users', function ($query) {
+                $query->where('customer_id', $this->customer->id);
+            })
+            ->first();
+
+        if (! $team) {
+            $firstUser = $this->customer->users()->first();
+
+            if ($firstUser) {
+                $team = $firstUser->ownedTeams()->first();
+            }
+
+            if (! $team) {
+                $owner = $this->customer->users()->first() ?? auth()->user();
+
+                $team = Team::create([
+                    'name' => $this->customer->name,
+                    'user_id' => $owner->id,
+                    'personal_team' => false,
+                ]);
+            }
+        }
+
+        return $team;
+    }
+
     public function render()
     {
         $this->customer->loadCount(['facilities', 'users']);
-        $this->customer->load(['facilities' => function ($query) {
-            $query->withCount('stations');
-        }]);
+        $this->customer->load([
+            'facilities' => function ($query) {
+                $query->withCount('stations');
+            },
+            'users',
+        ]);
 
         $stationsCount = $this->customer->facilities->sum('stations_count');
 

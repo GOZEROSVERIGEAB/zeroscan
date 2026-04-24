@@ -184,6 +184,7 @@ return [
         'basic_info' => 'Basic Info',
         'subscription' => 'Subscription & Limits',
         'usage' => 'Usage Statistics',
+        'users' => 'Users',
     ],
 
     // Usage
@@ -210,12 +211,61 @@ return [
     'days_left' => 'days left',
     'expired' => 'Expired',
 
-    // Facilities/Users sections
+    // Facilities section
     'facilities' => [
         'none' => 'No facilities created yet.',
     ],
+
+    // Users section
     'users' => [
         'none' => 'No users created yet.',
+        'add_user' => 'Add User',
+        'add_user_desc' => 'Create a new user for this customer.',
+        'name' => 'Name',
+        'name_placeholder' => 'John Doe',
+        'email' => 'Email',
+        'email_placeholder' => 'john@company.com',
+        'role' => 'Role',
+        'role_admin' => 'Administrator',
+        'role_editor' => 'Editor',
+        'role_user' => 'User',
+        'role_super_admin' => 'Super Admin',
+        'send_welcome_email' => 'Send welcome email',
+        'send_welcome_email_desc' => 'User receives instructions to log in.',
+        'add_button' => 'Add User',
+        'test_email' => 'Test Email (send to me)',
+        'test_email_hint' => 'Preview welcome email by sending to your email.',
+        'existing_users' => 'Existing Users',
+        'no_users' => 'No users added yet.',
+        'actions' => 'Actions',
+        'resend_welcome' => 'Resend Welcome Email',
+        'remove' => 'Remove User',
+        'confirm_remove' => 'Are you sure you want to remove this user?',
+        'created_success' => 'User created successfully.',
+        'removed_success' => 'User removed successfully.',
+        'test_email_sent' => 'Test email sent to your email address!',
+        'welcome_email_resent' => 'Welcome email resent.',
+        'email_exists' => 'A user with this email already exists.',
+        'cannot_remove_super_admin' => 'Cannot remove super admin users.',
+    ],
+
+    // Settings
+    'settings' => [
+        'title' => 'Settings',
+        'subtitle' => 'Configure platform settings and email templates.',
+        'tab_email' => 'Email Templates',
+        'welcome_email_title' => 'Welcome Email',
+        'welcome_email_desc' => 'Customize the email sent to new users when they are added to a customer.',
+        'subject' => 'Subject',
+        'body' => 'Content (HTML)',
+        'variables_hint' => 'Available variables',
+        'save_changes' => 'Save Changes',
+        'reset_to_default' => 'Reset to Default',
+        'confirm_reset' => 'Are you sure you want to reset the email template to default?',
+        'sender' => 'Sender',
+        'sender_note' => 'Sender cannot be changed here.',
+        'email_saved' => 'Email template saved successfully.',
+        'email_reset' => 'Email template reset to default.',
     ],
 
     // Validation

@@ -9,6 +9,7 @@ use App\Livewire\Admin\Customers\Edit;
 use App\Livewire\Admin\Customers\Index;
 use App\Livewire\Admin\Customers\Show;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Settings\EmailSettings;
 use App\Livewire\Facilities\CreateEdit;
 use App\Livewire\Reports\CsrdReport;
 use App\Livewire\Reports\EnvironmentImpact;
@@ -131,5 +132,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/create', CreateWizard::class)->name('admin.customers.create');
         Route::get('/customers/{customer}', Show::class)->name('admin.customers.show');
         Route::get('/customers/{customer}/edit', Edit::class)->name('admin.customers.edit');
+
+        // Settings
+        Route::get('/settings/email', EmailSettings::class)->name('admin.settings.email');
     });
 });
