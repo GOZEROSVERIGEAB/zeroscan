@@ -106,11 +106,13 @@ Route::get('/s/{uuid}/qr', [PublicScanningController::class, 'qrCode'])->name('p
 
 /*
 |--------------------------------------------------------------------------
-| Hazard Scanning Demo (PreZero Germany)
+| Hazard Scanning Demo (PreZero Germany) - Local only
 |--------------------------------------------------------------------------
 */
 
-Route::get('/hazard', App\Livewire\HazardScanPage::class)->name('hazard.scan');
+if (app()->environment('local')) {
+    Route::get('/hazard', App\Livewire\HazardScanPage::class)->name('hazard.scan');
+}
 
 /*
 |--------------------------------------------------------------------------
