@@ -23,8 +23,16 @@ class EnvironmentalReview extends Component
 
     public ?int $newCategoryId = null;
 
-    public function edit(Inventory $inventory): void
+    public function edit(int $inventoryId): void
     {
+        $inventory = Inventory::find($inventoryId);
+
+        if (! $inventory) {
+            session()->flash('error', 'Objektet hittades inte');
+
+            return;
+        }
+
         $this->editing = $inventory;
         $this->co2 = (float) $inventory->co2_savings ?: null;
         $this->water = (float) $inventory->water_savings ?: null;
