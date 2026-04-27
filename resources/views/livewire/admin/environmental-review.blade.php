@@ -157,7 +157,7 @@
                                                     <select wire:model="newCategoryId" class="w-full rounded-md border-gray-300 shadow-sm text-sm">
                                                         <option value="">Välj kategori...</option>
                                                         @foreach ($categories as $cat)
-                                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                            <option value="{{ $cat->id }}">{{ $cat->name_sv }}</option>
                                                         @endforeach
                                                     </select>
                                                     <button wire:click="recalculate" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
