@@ -39,17 +39,22 @@ class ScanningSession extends Model
         'total_co2_savings',
         'report_sent_at',
         'error_message',
+        'report_blocked',
+        'report_blocked_reason',
+        'admin_notified_at',
     ];
 
     protected $casts = [
         'inventory_uuids' => 'array',
         'report_sent' => 'boolean',
+        'report_blocked' => 'boolean',
         'gdpr_consent' => 'boolean',
         'gdpr_consent_at' => 'datetime',
         'completed_at' => 'datetime',
         'ai_processing_started_at' => 'datetime',
         'ai_processing_completed_at' => 'datetime',
         'report_sent_at' => 'datetime',
+        'admin_notified_at' => 'datetime',
         'total_items' => 'integer',
         'total_co2_savings' => 'decimal:3',
     ];
@@ -172,5 +177,54 @@ class ScanningSession extends Model
             self::STATUS_FAILED => 'Misslyckades',
             default => 'Okänd',
         };
+    }
+
+    public function hasZeroCo2Inventories(): bool
+    {
+        return $this->getZeroCo2Count() > 0;
+    }
+
+    public function getZeroCo2Count(): int
+    {
+        return $this->inventories()
+            ->where('status', Inventory::STATUS_COMPLETED)
+            ->where(function ($query) {
+                $query->whereNull('co2_savings')
+                    ->orWhere('co2_savings', 0);
+            })
+            ->count();
+    }
+
+    public function blockReport(string $reason): void
+    {
+        $this->update([
+            'report_blocked' => true,
+            'report_blocked_reason' => $reason,
+        ]);
+    }
+
+    public function unblockReport(): void
+    {
+        $this->update([
+            'report_blocked' => false,
+            'report_blocked_reason' => null,
+        ]);
+    }
+
+    public function markAdminNotified(): void
+    {
+        $this->update([
+            'admin_notified_at' => now(),
+        ]);
+    }
+
+    public function isReportBlocked(): bool
+    {
+        return $this->report_blocked === true;
+    }
+
+    public function canSendReport(): bool
+    {
+        return ! $this->report_sent && ! $this->hasZeroCo2Inventories();
     }
 }

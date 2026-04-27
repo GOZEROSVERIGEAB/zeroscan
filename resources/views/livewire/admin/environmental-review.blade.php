@@ -17,6 +17,73 @@
             </div>
         @endif
 
+        {{-- Blocked Sessions Section --}}
+        @if ($blockedSessions->isNotEmpty())
+            <div class="mb-8 bg-amber-50 border border-amber-200 rounded-lg p-6">
+                <div class="flex items-center mb-4">
+                    <svg class="h-6 w-6 text-amber-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h2 class="text-lg font-semibold text-amber-800">Blockerade Rapporter</h2>
+                </div>
+                <p class="text-sm text-amber-700 mb-4">Följande sessioner har rapporter som väntar på att skickas. Korrigera CO2-data för alla objekt och klicka sedan på "Skicka rapport".</p>
+
+                <div class="space-y-4">
+                    @foreach ($blockedSessions as $session)
+                        <div class="bg-white rounded-lg border {{ $session->can_send ? 'border-green-300' : 'border-amber-300' }} p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Session #{{ $session->id }}</span>
+                                        @if ($session->can_send)
+                                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                                <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                </svg>
+                                                Redo att skicka
+                                            </span>
+                                        @else
+                                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                                                {{ $session->zero_co2_count }} objekt saknar CO2
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="mt-1 text-sm text-gray-500">
+                                        <span>{{ $session->station?->name ?? 'Okänd station' }}</span>
+                                        <span class="mx-1">·</span>
+                                        <span>{{ $session->email }}</span>
+                                        <span class="mx-1">·</span>
+                                        <span>{{ $session->inventories->count() }} objekt</span>
+                                        <span class="mx-1">·</span>
+                                        <span>{{ $session->created_at->format('Y-m-d H:i') }}</span>
+                                    </div>
+                                    @if ($session->report_blocked_reason)
+                                        <div class="mt-1 text-xs text-gray-400">{{ $session->report_blocked_reason }}</div>
+                                    @endif
+                                </div>
+                                <div class="ml-4">
+                                    @if ($session->can_send)
+                                        <button
+                                            wire:click="sendBlockedReport({{ $session->id }})"
+                                            wire:confirm="Vill du skicka miljörapporten till {{ $session->email }}?"
+                                            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                        >
+                                            <svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                            Skicka rapport
+                                        </button>
+                                    @else
+                                        <span class="text-sm text-gray-400 italic">Korrigera CO2-data nedan först</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         @if ($inventories->isEmpty())
             <div class="bg-white rounded-lg shadow p-8 text-center">
                 <svg class="mx-auto h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

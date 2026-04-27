@@ -4,7 +4,9 @@ namespace App\Jobs;
 
 use App\Models\CustomerMonthlyUsage;
 use App\Models\Inventory;
+use App\Models\User;
 use App\Notifications\EnvironmentReportNotification;
+use App\Notifications\ZeroCo2AlertNotification;
 use App\Services\AIResponse;
 use App\Services\AIService;
 use App\Services\EnvironmentalFactorService;
@@ -215,20 +217,72 @@ class ProcessScannedInventory implements ShouldQueue
             ->whereNotIn('status', [Inventory::STATUS_COMPLETED, Inventory::STATUS_ERROR])
             ->count();
 
-        if ($pendingCount === 0 && $session->email && ! $session->report_sent) {
-            Notification::route('mail', $session->email)
-                ->notify(new EnvironmentReportNotification($session));
-
-            $session->update([
-                'report_sent' => true,
-                'completed_at' => now(),
-            ]);
-
-            Log::info('Environment report sent', [
-                'session_id' => $session->id,
-                'email' => $session->email,
-            ]);
+        if ($pendingCount > 0) {
+            return;
         }
+
+        if ($session->report_sent) {
+            return;
+        }
+
+        if (! $session->email) {
+            return;
+        }
+
+        $zeroCo2Count = $session->getZeroCo2Count();
+
+        if ($zeroCo2Count > 0) {
+            $this->blockReportAndNotifyAdmins($session, $zeroCo2Count);
+
+            return;
+        }
+
+        Notification::route('mail', $session->email)
+            ->notify(new EnvironmentReportNotification($session));
+
+        $session->update([
+            'report_sent' => true,
+            'completed_at' => now(),
+        ]);
+
+        Log::info('Environment report sent', [
+            'session_id' => $session->id,
+            'email' => $session->email,
+        ]);
+    }
+
+    protected function blockReportAndNotifyAdmins($session, int $zeroCo2Count): void
+    {
+        $session->blockReport("Objekt saknar CO2-data: {$zeroCo2Count} st");
+
+        if ($session->admin_notified_at) {
+            Log::info('Report blocked, admins already notified', [
+                'session_id' => $session->id,
+                'zero_co2_count' => $zeroCo2Count,
+            ]);
+
+            return;
+        }
+
+        $superAdmins = User::where('role', 'super_admin')->get();
+
+        if ($superAdmins->isEmpty()) {
+            Log::warning('No super admins found to notify about zero CO2 items', [
+                'session_id' => $session->id,
+            ]);
+
+            return;
+        }
+
+        Notification::send($superAdmins, new ZeroCo2AlertNotification($session, $zeroCo2Count));
+
+        $session->markAdminNotified();
+
+        Log::info('Report blocked, super admins notified', [
+            'session_id' => $session->id,
+            'zero_co2_count' => $zeroCo2Count,
+            'admins_notified' => $superAdmins->count(),
+        ]);
     }
 
     /**

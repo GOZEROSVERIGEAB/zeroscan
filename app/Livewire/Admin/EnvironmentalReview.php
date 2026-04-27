@@ -4,6 +4,9 @@ namespace App\Livewire\Admin;
 
 use App\Models\EnvironmentalCategory;
 use App\Models\Inventory;
+use App\Models\ScanningSession;
+use App\Notifications\EnvironmentReportNotification;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 
 class EnvironmentalReview extends Component
@@ -91,6 +94,47 @@ class EnvironmentalReview extends Component
         $this->cancel();
     }
 
+    public function sendBlockedReport(int $sessionId): void
+    {
+        $session = ScanningSession::find($sessionId);
+
+        if (! $session) {
+            session()->flash('error', 'Sessionen hittades inte');
+
+            return;
+        }
+
+        if ($session->report_sent) {
+            session()->flash('error', 'Rapporten har redan skickats');
+
+            return;
+        }
+
+        if ($session->hasZeroCo2Inventories()) {
+            session()->flash('error', 'Det finns fortfarande objekt utan CO2-data. Korrigera dessa först.');
+
+            return;
+        }
+
+        if (! $session->email) {
+            session()->flash('error', 'Sessionen saknar e-postadress');
+
+            return;
+        }
+
+        Notification::route('mail', $session->email)
+            ->notify(new EnvironmentReportNotification($session));
+
+        $session->update([
+            'report_sent' => true,
+            'report_blocked' => false,
+            'report_blocked_reason' => null,
+            'completed_at' => now(),
+        ]);
+
+        session()->flash('success', "Rapporten skickades till {$session->email}");
+    }
+
     public function render()
     {
         $inventories = Inventory::needsEnvironmentalReview()
@@ -101,9 +145,22 @@ class EnvironmentalReview extends Component
 
         $categories = EnvironmentalCategory::orderBy('name_sv')->get();
 
+        $blockedSessions = ScanningSession::where('report_blocked', true)
+            ->where('report_sent', false)
+            ->with(['station.facility', 'inventories'])
+            ->latest()
+            ->get()
+            ->map(function ($session) {
+                $session->zero_co2_count = $session->getZeroCo2Count();
+                $session->can_send = $session->zero_co2_count === 0;
+
+                return $session;
+            });
+
         return view('livewire.admin.environmental-review', [
             'inventories' => $inventories,
             'categories' => $categories,
+            'blockedSessions' => $blockedSessions,
         ])->layout('components.layouts.admin');
     }
 }
