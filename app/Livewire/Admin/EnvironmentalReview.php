@@ -75,30 +75,33 @@ class EnvironmentalReview extends Component
             return;
         }
 
-        $factor = $category->factors()->where('is_default', true)->first()
-            ?? $category->factors()->first();
+        $factor = $category->factors()
+            ->where('is_active', true)
+            ->where('is_verified', true)
+            ->first();
 
         if (! $factor) {
-            session()->flash('error', 'Ingen faktor hittades för vald kategori');
+            session()->flash('error', 'Ingen verifierad faktor hittades för vald kategori');
 
             return;
         }
 
-        $weight = $this->editing->weight ?? 1.0;
+        $co2Savings = $factor->calculateCo2Savings();
+        $waterSavings = $factor->calculateWaterSavings();
 
         $this->editing->update([
             'environmental_category_id' => $category->id,
             'environmental_factor_id' => $factor->id,
-            'co2_savings' => $factor->co2_kg_per_kg * $weight,
-            'water_savings' => $factor->water_liters_per_kg ? $factor->water_liters_per_kg * $weight : null,
-            'energy_savings' => $factor->energy_kwh_per_kg ? $factor->energy_kwh_per_kg * $weight : null,
+            'co2_savings' => $co2Savings,
+            'water_savings' => $waterSavings,
+            'energy_savings' => null,
             'environmental_data_source' => 'verified_database',
             'environmental_data_verified' => true,
-            'co2_source' => $factor->source?->name ?? 'Manuellt vald kategori',
-            'co2_calculation_notes' => "Kategori manuellt ändrad till: {$category->name}",
+            'co2_source' => $factor->source_name ?? 'Manuellt vald kategori',
+            'co2_calculation_notes' => "Kategori manuellt ändrad till: {$category->name_sv}",
         ]);
 
-        session()->flash('success', "Räknade om med kategori {$category->name}: {$this->editing->co2_savings} kg CO2");
+        session()->flash('success', "Räknade om med kategori {$category->name_sv}: {$co2Savings} kg CO2");
         $this->cancel();
     }
 
