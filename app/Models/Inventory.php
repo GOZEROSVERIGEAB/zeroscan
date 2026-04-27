@@ -132,7 +132,7 @@ class Inventory extends Model
     /**
      * Check if this inventory needs manual environmental data review.
      */
-    public function needsEnvironmentalReview(): bool
+    public function requiresEnvironmentalReview(): bool
     {
         return $this->status === self::STATUS_COMPLETED
             && ($this->co2_savings === null || $this->co2_savings == 0)
