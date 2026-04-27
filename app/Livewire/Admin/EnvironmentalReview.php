@@ -99,7 +99,7 @@ class EnvironmentalReview extends Component
             ->limit(50)
             ->get();
 
-        $categories = EnvironmentalCategory::orderBy('name')->get();
+        $categories = EnvironmentalCategory::orderBy('name_sv')->get();
 
         return view('livewire.admin.environmental-review', [
             'inventories' => $inventories,
