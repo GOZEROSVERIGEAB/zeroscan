@@ -123,9 +123,52 @@ class Inventory extends Model
         return match ($this->environmental_data_source) {
             'verified_database' => 'Verifierad källa',
             'no_data' => 'Data saknas',
+            'manual' => 'Manuellt angiven',
             'legacy_ai' => 'AI-estimerad (ej verifierad)',
             default => 'Okänd',
         };
+    }
+
+    /**
+     * Check if this inventory needs manual environmental data review.
+     */
+    public function needsEnvironmentalReview(): bool
+    {
+        return $this->status === self::STATUS_COMPLETED
+            && ($this->co2_savings === null || $this->co2_savings == 0)
+            && $this->environmental_data_source !== 'manual';
+    }
+
+    /**
+     * Scope for inventories that need manual environmental data review.
+     */
+    public function scopeNeedsEnvironmentalReview($query)
+    {
+        return $query->where('status', self::STATUS_COMPLETED)
+            ->where(function ($q) {
+                $q->whereNull('co2_savings')
+                    ->orWhere('co2_savings', 0);
+            })
+            ->where(function ($q) {
+                $q->whereNull('environmental_data_source')
+                    ->orWhere('environmental_data_source', '!=', 'manual');
+            });
+    }
+
+    /**
+     * Manually set environmental data.
+     */
+    public function setManualEnvironmentalData(float $co2Kg, ?float $waterLiters = null, ?float $energyKwh = null, ?string $notes = null): void
+    {
+        $this->update([
+            'co2_savings' => $co2Kg,
+            'water_savings' => $waterLiters,
+            'energy_savings' => $energyKwh,
+            'environmental_data_source' => 'manual',
+            'environmental_data_verified' => false,
+            'co2_source' => 'Manuellt angiven',
+            'co2_calculation_notes' => $notes ?? 'Manuellt inmatad av administratör.',
+        ]);
     }
 
     public function getRouteKeyName(): string

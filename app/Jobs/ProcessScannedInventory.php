@@ -169,6 +169,21 @@ class ProcessScannedInventory implements ShouldQueue
             'is_verified' => $envMetrics['verification']['is_verified'] ?? false,
         ]);
 
+        // Log warning if environmental data is missing - needs manual review
+        if ($envMetrics['data_source'] === 'no_data' || $envMetrics['co2_savings_kg'] === null || $envMetrics['co2_savings_kg'] == 0) {
+            Log::warning('Inventory missing environmental data - needs manual review', [
+                'inventory_id' => $this->inventory->id,
+                'inventory_uuid' => $this->inventory->uuid,
+                'name' => $aiData['name'] ?? 'Unknown',
+                'category' => $aiData['category'] ?? null,
+                'subcategory' => $aiData['subcategory'] ?? null,
+                'co2_savings_kg' => $envMetrics['co2_savings_kg'],
+                'data_source' => $envMetrics['data_source'],
+                'station_id' => $this->inventory->station_id,
+                'session_id' => $this->inventory->scanning_session_id,
+            ]);
+        }
+
         // Track monthly usage for the customer
         $this->incrementCustomerUsage();
     }

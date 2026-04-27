@@ -9,8 +9,10 @@ use App\Livewire\Admin\Customers\Edit;
 use App\Livewire\Admin\Customers\Index;
 use App\Livewire\Admin\Customers\Show;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\EnvironmentalReview;
 use App\Livewire\Admin\Settings\EmailSettings;
 use App\Livewire\Facilities\CreateEdit;
+use App\Livewire\HazardScanPage;
 use App\Livewire\Reports\CsrdReport;
 use App\Livewire\Reports\EnvironmentImpact;
 use App\Livewire\Reports\ExportCenter;
@@ -111,7 +113,7 @@ Route::get('/s/{uuid}/qr', [PublicScanningController::class, 'qrCode'])->name('p
 */
 
 if (app()->environment('local')) {
-    Route::get('/hazard', App\Livewire\HazardScanPage::class)->name('hazard.scan');
+    Route::get('/hazard', HazardScanPage::class)->name('hazard.scan');
 }
 
 /*
@@ -145,5 +147,8 @@ Route::prefix('admin')->group(function () {
 
         // Settings
         Route::get('/settings/email', EmailSettings::class)->name('admin.settings.email');
+
+        // Environmental Data Review
+        Route::get('/environmental-review', EnvironmentalReview::class)->name('admin.environmental-review');
     });
 });
